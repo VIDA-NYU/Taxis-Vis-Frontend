@@ -1,0 +1,122 @@
+.homepage-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(145deg, #f5f5f5, #e0e0e0);
+    height: 100vh;
+    font-family: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.homepage-card {
+    display: flex;
+    width: 80%;
+    height: 50%;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 5px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.homepage-card-left {
+    flex: 1;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.homepage-card-left img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.homepage-card-right {
+    flex: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.homepage-card-right h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.homepage-card-right p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.homepage-card-features {
+    margin-bottom: 20px;
+}
+
+.homepage-card-features h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.homepage-card-features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.homepage-card-features ul li {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.homepage-card-avatars {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.homepage-card-avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.homepage-card-avatars span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #666;
+}
+
+.homepage-card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.homepage-card-actions button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(145deg, #007aff, #005bb5);
+    border: none;
+    border-radius: 32px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0px 5px 15px rgba(0, 122, 255, 0.4);
+}
+
+.homepage-card-actions button:hover {
+    background: linear-gradient(145deg, #005bb5, #004b99);
+    box-shadow: 0px 7px 20px rgba(0, 91, 181, 0.6);
+    transform: scale(1.05);
+}
