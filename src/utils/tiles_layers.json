@@ -1,0 +1,14 @@
+{
+  "osm": {
+    "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "&copy; OpenStreetMap contributors"
+  },
+  "stamenToner": {
+    "url": "https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+    "attribution": "Map tiles by Stamen Design, CC BY 3.0 &mdash; Map data &copy; OpenStreetMap contributors"
+  },
+  "cartoLight": {
+    "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    "attribution": "&copy; OpenStreetMap contributors &copy; CARTO"
+  }
+}
