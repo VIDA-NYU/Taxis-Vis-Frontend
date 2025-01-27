@@ -1,0 +1,53 @@
+{
+  "name": "taxis-vis-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@adobe/react-spectrum": "^3.39.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@internationalized/date": "^3.7.0",
+    "@mui/icons-material": "^6.4.0",
+    "@mui/material": "^6.4.1",
+    "@testing-library/react": "^16.2.0",
+    "fs": "^0.0.1-security",
+    "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
+    "lodash.isequal": "^4.5.0",
+    "prop-types": "^15.8.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0",
+    "react-leaflet-heat-layer": "^1.1.1",
+    "react-plotly.js": "^2.6.0",
+    "react-router-dom": "^7.1.3",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "web-vitals": "^4.2.4"
+  }
+}
