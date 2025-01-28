@@ -28,9 +28,9 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 ## 🚀 **Overview**
 
 With geo-spatial insights and interactive visualisations, the Taxis Vis Frontend is the user
-interface for investigating and evaluating taxi trip data while working with two computational-based backends
+interface for investigating and evaluating taxi trip data while working with the computational-based backend
 discussed later. Though it is **proof-of-concept** and by far _does not cover all the features discussed in the paper_,
-the following first _alpha_ version is nevertheless important to show that it is _feasible_ without high-hurdles.
+the following first _alpha_ version is nevertheless important to show that it is _feasible_ without high hurdles.
 
 ### 🌍 **GeoSpatial Viz. & Computation**
 
@@ -73,31 +73,13 @@ the following first _alpha_ version is nevertheless important to show that it is
 
 #### **Backend: GeoSpatial Computation**
 
-| **Feature**                | **Details**                                                                                                                                                       |
-|----------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Framework**              | Node.js with V8 Multi-Threaded Engine [![GitHub Repo stars](https://img.shields.io/github/stars/nodejs/node?style=social)](https://github.com/nodejs/node)        |
-| **GeoSpatial Computation** | Turf.js for advanced spatial data processing [![GitHub Repo stars](https://img.shields.io/github/stars/Turfjs/turf?style=social)](https://github.com/Turfjs/turf) |
+| **Feature**                | **Details**                                                                                                                                                                 |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Framework**              | Node.js with V8 Multi-Threaded Engine [![GitHub Repo stars](https://img.shields.io/github/stars/nodejs/node?style=social)](https://github.com/nodejs/node)                  |
+| **GeoSpatial Computation** | Turf.js for advanced spatial data processing [![GitHub Repo stars](https://img.shields.io/github/stars/Turfjs/turf?style=social)](https://github.com/Turfjs/turf)           |
+| **Database**               | DuckDB for efficient querying and spatial indexing [![GitHub Repo stars](https://img.shields.io/github/stars/duckdb/duckdb?style=social)](https://github.com/duckdb/duckdb) |
 
 ---
-
-#### **Backend: Data Analysis**
-
-| **Feature**              | **Details**                                                                                                                                                                      |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Framework**            | Python (Django) [![GitHub Repo stars](https://img.shields.io/github/stars/django/django?style=social)](https://github.com/django/django)                                         |
-| **Data Analysis**        | Pandas for flexible and efficient data handling [![GitHub Repo stars](https://img.shields.io/github/stars/pandas-dev/pandas?style=social)](https://github.com/pandas-dev/pandas) |
-| **Numerical Processing** | NumPy for foundational numerical computations [![GitHub Repo stars](https://img.shields.io/github/stars/numpy/numpy?style=social)](https://github.com/numpy/numpy)               |
-
-## Limitations 🚧
-
-The **Taxis Vis** project, like any Proof-of-Concept, has limitations that are outlined below for
-transparency and improvement opportunities:
-
-| **Limitation**          | **Details**                                                                                                                                                                                                                                                                                                                               |
-|-------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Dataset Dependency**  | The project heavily relies on the structure of the current dataset/database used so far (see below). To improve flexibility, the system should support configurable column mappings for any taxi trip database.                                                                                                                           |
-| **Platform Testing**    | Currently tested only on 🍎 **macOS Sequoia** on an Apple Silicon-based machine. Compatibility with Linux is anticipated, but functionality on Windows remains unverified.                                                                                                                                                                |
-| **Database Efficiency** | Database management may not be optimised for maximum performance (yet!). Future exploration could benefit from integrating  **[DuckDB](https://github.com/duckdb/duckdb)**, a high-performance analytical database engine with the following stars: ![GitHub Repo stars](https://img.shields.io/github/stars/duckdb/duckdb?style=social). |
 
 ## 📦 **Installation**
 
@@ -127,9 +109,6 @@ transparency and improvement opportunities:
 
 ### **Pre-requisites**
 
-- **Python** installed on your system.
-- **pip** package manager installed.
-- **uv** package installed.
 - **Node.js** installed on your system.
 - **npm** package manager installed.
 
@@ -186,7 +165,7 @@ project are carefully chosen based on:
 - **Active Maintenance**: Recent commits to increase chances for long-term viability.
 - **Ease of Use**: APIs that are simple, intuitive, and/or heavy on features, allowing for rapid development.
 
-## **2. Combining Tools to Gain Complex Insights**
+### **2. Combining Tools to Gain Complex Insights**
 
 The paper's capabilities require multiple tools, such as spatial selections, queries, and temporal constraints.
 There is no single open-source solution that, to the best of the authors' knowledge, provides all of these capabilities
@@ -197,52 +176,16 @@ out of the box.
 
 This project seeks – in parallel of reproducing the so-chosen paper – to abstract and generalise components for reuse in
 the urban research community,
-including **@VIDA-NYU**. Consider the **customisable toolbar**: Leaflet and react-Leaflet provides basic
+including **@VIDA-NYU**.
+
+Consider the **customisable toolbar**: Leaflet and react-Leaflet provides basic
 drawing and spatial querying, but lacks easy customisation and event handling.
 We can think contributing to the urban analytics community by developing a reusable, modular toolbar for spatial
 selection and queries – While relying on Leaflet and react-Leaflet for the core functionality which are widely used and
 well-maintained.
 
+
 Scale this to all the other components, and we have a powerful, flexible, and reusable set of tools for urban analytics
-research.
+research – or even beyond! 👀
 
 ### Cheers! 🎉
-
----
-
-## Cite the Paper _we are reproducing_ 📜
-
-> @ARTICLE{6634127,  
-> author={Ferreira, Nivan and Poco, Jorge and Vo, Huy T. and Freire, Juliana and Silva, Cláudio T.},  
-> journal={IEEE Transactions on Visualization and Computer Graphics},   
-> title={Visual Exploration of Big Spatio-Temporal Urban Data: A Study of New York City Taxi Trips},   
-> year={2013},  
-> volume={19},  
-> number={12},  
-> pages={2149-2158},  
-> keywords={Visual analytics; Cities and towns; Data visualization; Data models; Analytical models; Time factors;
-> Mathematical model; Visual exploration; Spatio-temporal queries; Urban data; NYC taxis},  
-> doi={10.1109/TVCG.2013.226}  
-> }
-
-## Dataset Used So Far for the Proof-Of-Concept (POC) 📊
-
-For this POC, we use a publicly available dataset of New York City taxi trips
-from [Kaggle: NYC Yellow Taxi Trip Data](https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data).
-
-> This dataset has a similar structure and insights into NYC taxi trips, which align with the
-**Taxis Vis** project's goals, but it is not the same dataset (yet!). Future work will use the very same
-> data from the paper and improve the use of its _own_ data, as it currently adheres to current data schematics.
-
-🔗 [Explore the dataset on Kaggle](https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data)
-
-## 📖 **Explore Further**
-
-| **Resource**              | **Link**                                                                                          |
-|---------------------------|---------------------------------------------------------------------------------------------------|
-| **GeoSpatial Backend**    | [VIDA-NYU Taxis Vis GeoSpatial Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend) |
-| **Data Analysis Backend** | [VIDA-NYU Taxis Vis Data Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)             |
-
----
-
-**Happy Exploring! 🎉**
