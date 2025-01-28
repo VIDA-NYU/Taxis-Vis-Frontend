@@ -48,8 +48,6 @@ const TaxisVisGeoSpatialManager = ({
             if (bounds.length > 0) {
                 map.fitBounds(bounds, {padding: [200, 200]});
             }
-
-            console.log("Fetched trips from server:", trips.length);
         } catch (error) {
             // Error is already logged in the service
         }

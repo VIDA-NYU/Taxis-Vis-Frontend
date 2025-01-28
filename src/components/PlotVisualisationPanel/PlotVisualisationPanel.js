@@ -43,6 +43,8 @@ const PlotVisualisationPanel = ({
                                 ...plotLayout,
                                 autosize: true,
                                 margin: {t: 40, l: 40, r: 40, b: 40},
+                                paper_bgcolor: "rgb(0,0,0,0)",
+                                plot_bgcolor: "rgb(0,0,0,0)",
                             }}
                             style={{width: "100%", height: "100%"}}
                         />
