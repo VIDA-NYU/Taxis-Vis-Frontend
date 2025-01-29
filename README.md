@@ -179,13 +179,15 @@ the urban research community,
 including **@VIDA-NYU**.
 
 Consider the **customisable toolbar**: Leaflet and react-Leaflet provides basic
-drawing and spatial querying, but lacks easy customisation and event handling.
-We can think contributing to the urban analytics community by developing a reusable, modular toolbar for spatial
-selection and queries – While relying on Leaflet and react-Leaflet for the core functionality which are widely used and
-well-maintained.
+drawing and spatial querying, but lacks easy access to customisation as well as event handling.
+We can think contributing a very lightweight wrapper that would aid the urban analytics community by
+developing a reusable, modular toolbar for _spatial selection_ _(and the callbacks associated)_ and queries (and the
+callbacks associated) – While such component
+relies on Leaflet and react-Leaflet for the core functionality which are widely used and
+well-maintained ☀️.
 
-
-Scale this to all the other components, and we have a powerful, flexible, and reusable set of tools for urban analytics
+**Scale this to all the other components**, and we have a _powerful_, _flexible_, and _reusable_ set of tools for urban
+analytics
 research – or even beyond! 👀
 
 ### Cheers! 🎉
