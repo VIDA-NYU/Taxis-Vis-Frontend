@@ -1,5 +1,19 @@
 import {API_URLS} from "../../config/apiUrls";
 
+const flattenObject = (obj, parent = '', res = {}) => {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            const propName = parent ? `${parent}_${key}` : key;
+            if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                flattenObject(obj[key], propName, res);
+            } else {
+                res[propName] = obj[key];
+            }
+        }
+    }
+    return res;
+};
+
 export const escapeForCSV = (value) => {
     if (value == null) {
         return '';
@@ -12,13 +26,22 @@ export const convertTripsToCSV = (trips = []) => {
     if (!Array.isArray(trips) || trips.length === 0) {
         return '';
     }
-    const headers = Object.keys(trips[0]).join(',');
-    const rows = trips.map((trip) =>
-        Object.values(trip)
-            .map(escapeForCSV)
-            .join(',')
-    );
-    return `${headers}\n${rows.join('\n')}`;
+
+    const flattenedTrips = trips.map(trip => flattenObject(trip));
+
+    const headersSet = new Set();
+    flattenedTrips.forEach(trip => {
+        Object.keys(trip).forEach(key => headersSet.add(key));
+    });
+    const headers = Array.from(headersSet);
+
+    const csvHeaders = headers.join(',');
+
+    const rows = flattenedTrips.map(trip => {
+        return headers.map(header => escapeForCSV(trip[header])).join(',');
+    });
+
+    return `${csvHeaders}\n${rows.join('\n')}`;
 };
 
 export const uploadTripsForAnalysis = async (analysis, filteredTrips) => {
