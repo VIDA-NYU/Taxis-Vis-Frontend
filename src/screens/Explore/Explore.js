@@ -19,45 +19,36 @@ import "./Explore.styles.css";
 import {fetchGeoJson} from "./Explore.services";
 
 const Explore = () => {
-    const [features, setFeatures] = useState({
-        pickup: [],
-        dropoff: [],
-        directional: [],
-    });
-
+    const [mapConfig, setMapConfig] = useState(null);
+    const [geoJsonLayers, setGeoJsonLayers] = useState([]);
+    const [features, setFeatures] = useState({pickup: [], dropoff: [], directional: []});
     const [queries, setQueries] = useState([]);
-    const [nycGeoJson, setNycGeoJson] = useState(null);
-    const [nycParksGeoJson, setNycParksGeoJson] = useState(null);
-    const [nycNeighbourhoodsGeoJson, setNycNeighbourhoodsGeoJson] = useState(null);
     const [bufferDistance, setBufferDistance] = useState(600);
-
     const [filteredTrips, setFilteredTrips] = useState([]);
     const [isPlotlyVisible, setIsPlotlyVisible] = useState(false);
-    const [currentPlot, setCurrentPlot] = useState({
-        title: "",
-        plotData: null,
-        plotLayout: null,
-    });
-
+    const [currentPlot, setCurrentPlot] = useState({title: "", plotData: null, plotLayout: null});
     const [dateRange, setDateRange] = useState({start: null, end: null});
 
     useEffect(() => {
-        const loadGeoJson = async () => {
+        const loadConfig = async () => {
             try {
-                const nycData = await fetchGeoJson("/nyc.geojson");
-                setNycGeoJson(nycData);
+                const response = await fetch("/config/mapConfig.json");
+                const config = await response.json();
+                setMapConfig(config?.mapSettings || {});
 
-                const parksData = await fetchGeoJson("/parks.geojson");
-                setNycParksGeoJson(parksData);
-
-                const neighbourhoodsData = await fetchGeoJson("/nyc_neighboroods.geojson");
-                setNycNeighbourhoodsGeoJson(neighbourhoodsData);
+                const layersData = await Promise.all(
+                    config.geoJsonLayers.map(async (layer) => ({
+                        ...layer,
+                        geojsonData: await fetchGeoJson(layer.url),
+                    }))
+                );
+                setGeoJsonLayers(layersData);
             } catch (error) {
-                // Errors are already logged in fetchGeoJson
+                console.error("Error loading map configuration:", error);
             }
         };
 
-        loadGeoJson();
+        loadConfig();
     }, []);
 
     const consolidateQueries = (featuresParam, dateRangeOverride = dateRange) => {
@@ -136,9 +127,12 @@ const Explore = () => {
     };
 
     const updateFeaturesAndQueries = (updated) => {
-        setFeatures(updated);
-        const q = consolidateQueries(updated);
-        setQueries(q);
+        const temp_updated = Array.isArray(updated) && updated.length === 0
+            ? {pickup: [], dropoff: [], directional: []}
+            : updated;
+
+        setFeatures(temp_updated);
+        setQueries(consolidateQueries(temp_updated));
     };
 
     const handleDateRangeChange = (newRange) => {
@@ -147,8 +141,7 @@ const Explore = () => {
             end: newRange.end?.toDate() || null,
         };
         setDateRange(formattedRange);
-        const updatedQueries = consolidateQueries(features, formattedRange);
-        setQueries(updatedQueries);
+        setQueries(consolidateQueries(features, formattedRange));
     };
 
     useEffect(() => {
@@ -157,14 +150,54 @@ const Explore = () => {
     }, [dateRange]);
 
     const analyses = [
-        {name: "Trip Duration Histogram", endpoint: "trip-duration-histogram", icon: <HourglassIcon/>},
-        {name: "Peak Hours Bar Chart", endpoint: "peak-hours-bar", icon: <LineStyleIcon/>},
-        {name: "Fare Distribution Box Plot", endpoint: "fare-distribution-box", icon: <MoneyIcon/>},
-        {name: "Passenger Count Pie Chart", endpoint: "passenger-count-pie", icon: <UserIcon/>},
-        {name: "Payment Type Pie Chart", endpoint: "payment-type-pie", icon: <CreditCardIcon/>},
-        {name: "Tip Amount Box Plot", endpoint: "tip-amount-box", icon: <MoneyIcon/>},
-        {name: "Distance-Fare Scatter Plot", endpoint: "distance-fare-scatter-plot", icon: <ScatterPlotIcon/>},
-        {name: "Time Series Line Chart", endpoint: "time-series-line", icon: <LineStyleIcon/>},
+        {
+            name: "Trip Duration Histogram",
+            endpoint: "trip-duration-histogram",
+            icon: <HourglassIcon/>,
+            requiredColumns: ["pickup_datetime", "dropoff_datetime"]
+        },
+        {
+            name: "Peak Hours Bar Chart",
+            endpoint: "peak-hours-bar",
+            icon: <LineStyleIcon/>,
+            requiredColumns: ["pickup_datetime"]
+        },
+        {
+            name: "Fare Distribution Box Plot",
+            endpoint: "fare-distribution-box",
+            icon: <MoneyIcon/>,
+            requiredColumns: ["fare_amount"]
+        },
+        {
+            name: "Passenger Count Pie Chart",
+            endpoint: "passenger-count-pie",
+            icon: <UserIcon/>,
+            requiredColumns: ["passenger_count"]
+        },
+        {
+            name: "Payment Type Pie Chart",
+            endpoint: "payment-type-pie",
+            icon: <CreditCardIcon/>,
+            requiredColumns: ["payment_type"]
+        },
+        {
+            name: "Tip Amount Box Plot",
+            endpoint: "tip-amount-box",
+            icon: <MoneyIcon/>,
+            requiredColumns: ["tip_amount"]
+        },
+        {
+            name: "Distance-Fare Scatter Plot",
+            endpoint: "distance-fare-scatter-plot",
+            icon: <ScatterPlotIcon/>,
+            requiredColumns: ["trip_distance", "fare_amount"]
+        },
+        {
+            name: "Time Series Line Chart",
+            endpoint: "time-series-line",
+            icon: <LineStyleIcon/>,
+            requiredColumns: ["pickup_datetime"]
+        }
     ];
 
     const handleClosePlotly = () => {
@@ -172,66 +205,43 @@ const Explore = () => {
         setCurrentPlot({title: "", plotData: null, plotLayout: null});
     };
 
-    const layers = [
-        {
-            id: "nyc-layer",
-            name: "NYCBoroughs",
-            geojsonData: nycGeoJson,
-            style: {color: "#4E3FC8", weight: 2, opacity: 0.5},
-        },
-        {
-            id: "nyc-neighbourhoods-layer",
-            name: "NYCNeighbourhoods",
-            geojsonData: nycNeighbourhoodsGeoJson,
-            style: {color: "#8206a9", weight: 2, opacity: 0.5},
-        },
-        {
-            id: "nyc-parks-layer",
-            name: "NYCParks",
-            geojsonData: nycParksGeoJson,
-            style: {color: "#298008", weight: 2, opacity: 0.5},
-        },
-    ];
-
     return (
         <Provider theme={defaultTheme} colorScheme="light">
             <div className="home-app-container">
-                <CoreMap tileLayer="cartoLight">
-                    {nycGeoJson && <GeoJsonLayersPanel layers={layers} position="bottom-right"/>}
-                    <ToolbarPanel
-                        features={features}
-                        onCreate={handleCreate}
-                        onUpdate={handleUpdate}
-                        onDelete={handleDelete}
-                        bufferDistance={bufferDistance}
-                        setBufferDistance={setBufferDistance}
-                        onDateRangeChange={handleDateRangeChange}
-                    />
-                    <TaxisVisGeoSpatialManager
-                        queries={queries}
-                        onFilteredTrips={(filtered) => {
-                            setFilteredTrips(filtered);
-                        }}
-                        markerStyle={{radius: 4}}
-                        heatmapOptions={{
-                            radius: 20,
-                            blur: 15,
-                            max: 1.0,
-                            gradient: {
-                                0.4: "orange",
-                                0.65: "yellow",
-                                1: "red",
-                            },
-                        }}
-                        markerColors={{pickup: "blue", dropoff: "orange"}}
-                        limit={100000}
-                    />
-                    <QueryDescriptionPanel
-                        queries={queries}
-                        limit={100000}
-                        timeRange={dateRange}
-                    />
-                </CoreMap>
+                {mapConfig && (
+                    <CoreMap
+                        tileLayer={mapConfig.tileLayer || "cartoLight"}
+                        center={mapConfig.center || [40.7128, -74.0060]}
+                        zoom={mapConfig.zoom || 12}
+                    >
+                        {geoJsonLayers.length > 0 && (
+                            <GeoJsonLayersPanel layers={geoJsonLayers} position="bottom-right"/>
+                        )}
+                        <ToolbarPanel
+                            features={features}
+                            onCreate={(created) => handleCreate(created)}
+                            onUpdate={(updated) => handleUpdate(updated)}
+                            onDelete={(remaining) => handleDelete(remaining)}
+                            bufferDistance={bufferDistance}
+                            setBufferDistance={setBufferDistance}
+                            onDateRangeChange={handleDateRangeChange}
+                        />
+                        <TaxisVisGeoSpatialManager
+                            queries={queries}
+                            onFilteredTrips={setFilteredTrips}
+                            markerStyle={{radius: 4}}
+                            heatmapOptions={{
+                                radius: 20,
+                                blur: 15,
+                                max: 1.0,
+                                gradient: {0.4: "orange", 0.65: "yellow", 1: "red"},
+                            }}
+                            markerColors={{pickup: "blue", dropoff: "orange"}}
+                            limit={100000}
+                        />
+                        <QueryDescriptionPanel queries={queries} limit={100000} timeRange={dateRange}/>
+                    </CoreMap>
+                )}
                 <DataAnalysisPanel
                     position="top-right"
                     analyses={analyses}
@@ -256,7 +266,5 @@ const Explore = () => {
         </Provider>
     );
 };
-
-Explore.propTypes = {};
 
 export default Explore;

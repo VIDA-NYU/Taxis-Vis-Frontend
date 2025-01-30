@@ -82,3 +82,9 @@
     font-weight: 500;
     color: black;
 }
+
+
+.analysis_panel-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
