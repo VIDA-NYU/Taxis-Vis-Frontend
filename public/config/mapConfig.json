@@ -1,0 +1,42 @@
+{
+  "mapSettings": {
+    "tileLayer": "cartoLight",
+    "center": [
+      40.7128,
+      -74.0060
+    ],
+    "zoom": 11
+  },
+  "geoJsonLayers": [
+    {
+      "id": "nyc-layer",
+      "name": "NYCBoroughs",
+      "url": "/geojson/NYC/boroughs.geojson",
+      "style": {
+        "color": "#4E3FC8",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "nyc-neighbourhoods-layer",
+      "name": "NYCNeighbourhoods",
+      "url": "/geojson/NYC/neighborhoods.geojson",
+      "style": {
+        "color": "#8206a9",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "nyc-parks-layer",
+      "name": "NYCParks",
+      "url": "/geojson/NYC/parks.geojson",
+      "style": {
+        "color": "#298008",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    }
+  ]
+}
