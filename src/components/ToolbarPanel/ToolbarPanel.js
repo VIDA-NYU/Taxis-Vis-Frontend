@@ -46,11 +46,12 @@ const ToolbarPanel = ({
     const isSliderVisible = activeButton === "directional";
     const isDatePickerVisible = activeButton === "calendar";
 
-    const hasPickupAndDropoff = features.pickup.length > 0 && features.dropoff.length > 0;
+    const hasPickupAndDropoff = features && features?.pickup?.length > 0 && features?.dropoff?.length > 0;
     const hasAnyFeature =
-        features.pickup.length > 0 ||
-        features.dropoff.length > 0 ||
-        features.directional.length > 0;
+        features && (
+            features.pickup.length > 0 ||
+            features.dropoff.length > 0 ||
+            features.directional.length > 0);
 
     const {activateDrawing, activateEditing, activateDeleting} = useLeafletDrawHandlers({
         map,
