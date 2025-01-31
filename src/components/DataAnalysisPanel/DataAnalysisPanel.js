@@ -21,7 +21,7 @@ const NotificationPanel = ({notifications, onClick}) => {
             >
                 {notifications.map((notification, index) => {
                     const isExpanded = isHovered;
-                    const offset = isExpanded ? `${index * 20}px` : `${index * 20}px`;
+                    const offset = isExpanded ? `${index * 20}px` : `${index * 25}px`;
                     const opacity = isExpanded ? 1 : 1 - index * 0.15;
                     const disabled = notification.disabled;
 
