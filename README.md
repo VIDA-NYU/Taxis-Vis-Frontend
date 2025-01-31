@@ -132,7 +132,7 @@ The **Frontend** relies on `public/config/mapConfig.json` to configure:
 - **`mapSettings`**: Contains your default map center & zoom.
 - **`geoJsonLayers`**: Each layer has an `id`, a `name`, a `url` path to the `.geojson` file, and an optional `style`.
 
-> ![NOTE]
+> [!NOTE]
 > You can serve multiple layers by adding them to this array. The `UI` can toggle them `on/off`.
 
 ### **B. Adding a New City or Additional Layers**
@@ -189,7 +189,7 @@ for their respective configurations.
    ```
 4. **Open** `http://localhost:3000` in your browser.
 
-> ![NOTE]
+> [!NOTE]
 > If you need to point to different backend URLs, see `src/config/apiUrls.js` or adjust your environment variables. By
 > default, it expects the Node.js backend on `localhost:4000` and the Django backend on `localhost:8000`.
 
