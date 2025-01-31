@@ -26,45 +26,19 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 
 ## 📣 **Latest News**
 
-<details>
-<summary> 📢 Click here to expand! ➡️ </summary>
-
-- **🎉DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis Vis.
-  See the last section of this README for more info.
-- **🌎Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest—provided you
-  have
-  the taxi data and minimal geojson resources. The system's architecture is flexible enough to accommodate various
-  schemas and polygon data with only small config changes.
-- **✅Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like React, Leaflet,
-  DuckDB, Django, and more. We’ve eliminated high hurdles typically seen for example by the need of the custom DB within
-  the paper, years ago.
-
-</details>
-
-## 🚴 **Future Work & Open Research Questions**
-
-<details>
-<summary> 📢 Click here to expand! ➡️ </summary>
-
-**Practice-based Enhancements**
-
-- **Concurrency on the Geospatial Backend**: Explore how DuckDB in read-only mode can handle more parallel queries. (
-  Full concurrency in write-mode remains limited by DuckDB’s architecture.)
-- **Extended Data Analysis Endpoints**: Implement additional analyses from the original Taxis-Vis paper (and beyond).
-- **Advanced Date Picker**: Incorporate hour- and minute-level constraints in the time range filtering.
-- **Cloud Hosting & Benchmarking**: Test performance with 100K, 1M, and 10M trip records in real-time environments.
-
-**Research-based Open Questions**
-
-- **Reusability**: Investigate how each component—frontends, backends, libraries—could form a broader ecosystem for
-  urban analytics, accessible to both technical and non-technical stakeholders.
-- **LLMs for Automation**: Explore how large language models could streamline the entire process—creating new Taxis Vis
-  instances for different cities, handling JSON config automatically, or giving step-by-step guidance for each setup.
-- **Community & Reusability**: Discuss with Juliana, Claudio, and Joao to understand the real-world value of a
-  dedicated, open-source “urban computing” library. Would it speed up future proof-of-concept builds inside NYU VIDA and
-  beyond? That's my belief and do not understand why is there yet not a toolkit for it!
-
-</details>
+> [!IMPORTANT]
+> ### **Latest News**
+> - **🎉 DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis
+    Vis.  
+    > You can find these in the `examples/` directory of this repository.
+> - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest —
+    provided
+    > you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to accommodate
+    > various schemas and polygon data with small config changes.
+> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like
+    React,
+    > Leaflet, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions, such as
+    > specialized or custom databases.
 
 ## 🚀 **Overview**
 
@@ -300,6 +274,31 @@ creation, and geojson layering.
 > 3. Enjoy your newly integrated taxi trip dataset! 🎉
 
 ---
+
+## 🚴 **Future Work & Open Research Questions**
+
+<details>
+<summary> 📢 Click here to expand! ➡️ </summary>
+
+**Practice-based Enhancements**
+
+- **Concurrency on the Geospatial Backend**: Explore how DuckDB in read-only mode can handle more parallel queries. (
+  Full concurrency in write-mode remains limited by DuckDB’s architecture.)
+- **Extended Data Analysis Endpoints**: Implement additional analyses from the original Taxis-Vis paper (and beyond).
+- **Advanced Date Picker**: Incorporate hour- and minute-level constraints in the time range filtering.
+- **Cloud Hosting & Benchmarking**: Test performance with 100K, 1M, and 10M trip records in real-time environments.
+
+**Research-based Open Questions**
+
+- **Reusability**: Investigate how each component—frontends, backends, libraries—could form a broader ecosystem for
+  urban analytics, accessible to both technical and non-technical stakeholders.
+- **LLMs for Automation**: Explore how large language models could streamline the entire process—creating new Taxis Vis
+  instances for different cities, handling JSON config automatically, or giving step-by-step guidance for each setup.
+- **Community & Reusability**: Discuss with Juliana, Claudio, and Joao to understand the real-world value of a
+  dedicated, open-source “urban computing” library. Would it speed up future proof-of-concept builds inside NYU VIDA and
+  beyond? That's my belief and do not understand why is there yet not a toolkit for it!
+
+</details>
 
 ## 📖 **Further Reading**
 
