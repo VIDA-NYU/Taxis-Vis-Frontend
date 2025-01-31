@@ -2,13 +2,16 @@ import {API_URLS} from "../../config/apiUrls";
 
 const flattenObject = (obj, parent = '', res = {}) => {
     for (let key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            const propName = parent ? `${parent}_${key}` : key;
-            if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
-                flattenObject(obj[key], propName, res);
-            } else {
-                res[propName] = obj[key];
-            }
+        if (!obj.hasOwnProperty(key)) continue;
+
+        const propName = parent ? `${parent}_${key}` : key;
+
+        if (['pickup', 'dropoff'].includes(key) && typeof obj[key] === 'object') {
+            res[propName] = JSON.stringify(obj[key]);
+        } else if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+            flattenObject(obj[key], propName, res);
+        } else {
+            res[propName] = obj[key];
         }
     }
     return res;
@@ -44,25 +47,58 @@ export const convertTripsToCSV = (trips = []) => {
     return `${csvHeaders}\n${rows.join('\n')}`;
 };
 
-export const uploadTripsForAnalysis = async (analysis, filteredTrips) => {
+export const checkAvailableAnalyses = (filteredTrips, requiredColumns) => {
+    if (!filteredTrips || filteredTrips.length === 0) return {};
+
+    const datasetColumns = new Set(Object.keys(filteredTrips[0] || {}));
+
+    return Object.fromEntries(
+        requiredColumns.map(column => [column, datasetColumns.has(column)])
+    );
+};
+
+export const filterValidTrips = (filteredTrips, requiredColumns) => {
+    return filteredTrips.filter(trip => {
+        let isValid = true;
+
+        requiredColumns.forEach(column => {
+            if (
+                !trip.hasOwnProperty(column) ||
+                trip[column] === null ||
+                trip[column] === undefined ||
+                (typeof trip[column] === "string" && trip[column].trim() === "")
+            ) {
+                console.warn(`Missing required column: ${column}`);
+                console.warn(trip);
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    });
+};
+
+export const uploadTripsForAnalysis = async (analysis, filteredTrips, config) => {
     if (!analysis || !analysis.endpoint) {
         throw new Error("Invalid analysis or missing endpoint.");
     }
 
-    const csvContent = convertTripsToCSV(filteredTrips);
+    const requiredColumns = analysis.requiredColumns || [];
+
+    const validTrips = filterValidTrips(filteredTrips, requiredColumns);
+
+    if (validTrips.length === 0) {
+        throw new Error("No valid trips available for analysis.");
+    }
+
+    const csvContent = convertTripsToCSV(validTrips);
     if (!csvContent) {
-        throw new Error("No trips available for analysis.");
+        throw new Error("Failed to generate CSV.");
     }
 
     const blob = new Blob([csvContent], {type: "text/csv"});
     const formData = new FormData();
     formData.append("file", blob, "filtered_taxis.csv");
-
-    if (analysis.additionalParams && typeof analysis.additionalParams === "object") {
-        Object.entries(analysis.additionalParams).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-    }
 
     let response;
     try {

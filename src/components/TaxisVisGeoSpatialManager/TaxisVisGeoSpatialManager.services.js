@@ -23,8 +23,12 @@ export const fetchTrips = async (queries, limit = 1000000) => {
         const bounds = [];
 
         data.forEach((doc) => {
-            const [pickupLng, pickupLat] = doc.pickup.coordinates;
-            const [dropoffLng, dropoffLat] = doc.dropoff.coordinates;
+            if (!doc?.pickup?.coordinates || !doc?.dropoff?.coordinates) {
+                console.warn("Missing coordinates in document:", doc);
+                return;
+            }
+            const [pickupLng, pickupLat] = doc?.pickup?.coordinates;
+            const [dropoffLng, dropoffLat] = doc?.dropoff?.coordinates;
 
             markers.push({position: [pickupLat, pickupLng], color: "blue"});
             markers.push({position: [dropoffLat, dropoffLng], color: "orange"});

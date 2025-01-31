@@ -6,7 +6,7 @@
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=Leaflet&logoColor=white)
 ![Plotly.js](https://img.shields.io/badge/Plotly.js-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.1.0_alpha-red?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-0.2.0_alpha-red?style=for-the-badge)
 </div>
 
 ______
@@ -20,64 +20,145 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 
 </div>
 
-
 <div align="center">
   <img src="./public/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
 </div>
 
+## 📣 **Latest News**
+
+<details>
+<summary> 📢 Click here to expand! ➡️ </summary>
+
+- **Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest—provided you have
+  the taxi data and minimal geojson resources. The system's architecture is flexible enough to accommodate various
+  schemas and polygon data with only small config changes.
+- **Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like React, Leaflet,
+  DuckDB, Django, and more. We’ve eliminated high hurdles typically seen for example by the need of the custom DB within
+  the paper, years ago.
+
+</details>
+
+## 🚴 **Future Work & Open Research Questions**
+
+<details>
+<summary> 📢 Click here to expand! ➡️ </summary>
+
+**Practice-based Enhancements**
+
+- **Concurrency on the Geospatial Backend**: Explore how DuckDB in read-only mode can handle more parallel queries. (
+  Full concurrency in write-mode remains limited by DuckDB’s architecture.)
+- **Extended Data Analysis Endpoints**: Implement additional analyses from the original Taxis-Vis paper (and beyond).
+- **Advanced Date Picker**: Incorporate hour- and minute-level constraints in the time range filtering.
+- **Cloud Hosting & Benchmarking**: Test performance with 100K, 1M, and 10M trip records in real-time environments.
+
+**Research-based Open Questions**
+
+- **Reusability**: Investigate how each component—frontends, backends, libraries—could form a broader ecosystem for
+  urban analytics, accessible to both technical and non-technical stakeholders.
+- **LLMs for Automation**: Explore how large language models could streamline the entire process—creating new Taxis Vis
+  instances for different cities, handling JSON config automatically, or giving step-by-step guidance for each setup.
+- **Community & Reusability**: Discuss with Juliana, Claudio, and Joao to understand the real-world value of a
+  dedicated, open-source “urban computing” library. Would it speed up future proof-of-concept builds inside NYU VIDA and
+  beyond? That's my belief and do not understand why is there yet not a toolkit for it!
+
+</details>
+
 ## 🚀 **Overview**
 
-With geo-spatial insights and interactive visualisations, the Taxis Vis Frontend is the user
-interface for investigating and evaluating taxi trip data while working with the computational-based backend
-discussed later. Though it is **proof-of-concept** and by far _does not cover all the features discussed in the paper_,
-the following first _alpha_ version is nevertheless important to show that it is _feasible_ without high hurdles.
+The `Taxis Vis Frontend` provides geo-spatial insights and interactive visualisations for investigating taxi trip data
+(⌗ yes, to any city of interest as long as you have the data that comes with it ⌗ !).
 
-### 🌍 **GeoSpatial Viz. & Computation**
+It communicates with:
 
-| **Feature**                       | **Notes**                                                                                    |
-|-----------------------------------|----------------------------------------------------------------------------------------------|
-| **Spatial Selections**            | Simple **Pickup** &or; **Dropoff** zones using polygon drawings.                             |
-| **Spatial Queries (SQ)**          | Combine **Pickup** &and; **Dropoff**, as well as with directional lines using a buffer zone. |
-| **SQ &cup; Temporal Constraints** | Apply **time filters** to all types of Spatial Queries (**SQ**).                             |
+1. A **GeoSpatial Node.js + DuckDB Backend** – performing spatial & filtering queries.
+2. A **Data Analysis Python Django + Pandas Backend** – performing analyses & generating chart data.
 
-### 📊 **Data Analysis**
-
-> [!IMPORTANT]
-> The following are not taken from the paper. They are simply available to show the capability of the backend to provide
-> insights and data analysis. Further development is possible to match the paper's _exact_ features.
-
-| **Feature**                            | **Notes**                                                        |
-|----------------------------------------|------------------------------------------------------------------|
-| 🕒 **Trip Duration Histogram**         | Visualises the distribution of trip durations.                   |
-| 📊 **Peak Hours Bar Chart**            | Highlights the busiest hours of the day.                         |
-| 📦 **Fare Distribution Box Plot**      | Displays the range and distribution of fares.                    |
-| 🧑‍🤝‍🧑 **Passenger Count Pie Chart** | Breaks down trips by passenger count.                            |
-| 💳 **Payment Type Pie Chart**          | Shows the proportions of different payment methods.              |
-| 💸 **Tip Amount Analysis**             | Analyses tips provided by passengers.                            |
-| 🚗 **Distance-Fare Scatter Plot**      | Explores the relationship between trip distance and fare amount. |
-| 📈 **Time Series Line Graph**          | Displays trends over time.                                       |
+While not fully replicating every feature from the paper, this **proof-of-concept** demonstrates the feasibility of
+developing a robust, real-time, interactive taxi data exploration tool using _today_ tools without weeks or month
+of development time.
 
 ---
 
-### 🚀 **Technology Stack**
+## ☀️ **Key Features**
 
-#### **Frontend**
-
-| **Feature**              | **Details**                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-|--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Framework**            | React.js _(version: 19.0.0)_ [![GitHub Repo stars](https://img.shields.io/github/stars/facebook/react?style=social)](https://github.com/facebook/react)                                                                                                                                                                                                                                                                                                                |
-| **GeoSpatial Mapping**   | Leaflet with React-Leaflet for map (navigation/drawing/interactions) management & smoothness enhancements, comparable to MapLibre for enhanced navigation. <br>- [Leaflet ![GitHub Repo stars](https://img.shields.io/github/stars/Leaflet/Leaflet?style=social)](https://github.com/Leaflet/Leaflet) <br>- [React-Leaflet ![GitHub Repo stars](https://img.shields.io/github/stars/PaulLeCam/react-leaflet?style=social)](https://github.com/PaulLeCam/react-leaflet) |
-| **Graph Visualisations** | Plotly.js for dynamic graph visualisations [![GitHub Repo stars](https://img.shields.io/github/stars/plotly/plotly.js?style=social)](https://github.com/plotly/plotly.js)                                                                                                                                                                                                                                                                                              |
+- **Spatial Selections** – Draw polygons or lines to define **Pickup** or **Dropoff** regions and query them.
+- **Spatial Queries** – Filter trips based on spatial relationships (e.g., &cup; of **Pickup** and **Dropoff** regions,*
+  *Directional** queries, etc.).
+- **Temporal Constraints** – Combine **time ranges** with your spatial queries to refine trip filtering.
+- **Data Analysis** – Generate histograms, box plots, scatter plots, and other charts from the filtered data.
 
 ---
 
-#### **Backend: GeoSpatial Computation**
+## 🎛️ **Configuration Management**
 
-| **Feature**                | **Details**                                                                                                                                                                 |
-|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Framework**              | Node.js with V8 Multi-Threaded Engine [![GitHub Repo stars](https://img.shields.io/github/stars/nodejs/node?style=social)](https://github.com/nodejs/node)                  |
-| **GeoSpatial Computation** | Turf.js for advanced spatial data processing [![GitHub Repo stars](https://img.shields.io/github/stars/Turfjs/turf?style=social)](https://github.com/Turfjs/turf)           |
-| **Database**               | DuckDB for efficient querying and spatial indexing [![GitHub Repo stars](https://img.shields.io/github/stars/duckdb/duckdb?style=social)](https://github.com/duckdb/duckdb) |
+<details>
+<summary> 👀 Curious how to deal with your own city of interest, taxi trips data of interest ? Click here to expand! ➡️ </summary>
+
+### **A. `mapConfig.json` for Map Setup and Layers**
+
+The **Frontend** relies on `public/config/mapConfig.json` to configure:
+
+1. **Map Defaults** (tile layer, center coordinates, zoom level, etc.)
+2. **GeoJSON Layers** – the static geojson polygons/lines you want to display (e.g., city boundaries, boroughs,
+   neighborhoods, etc.)
+
+**Example**:
+
+```json
+{
+  "mapSettings": {
+    "tileLayer": "cartoLight",
+    "center": [
+      40.7128,
+      -74.0060
+    ],
+    "zoom": 11
+  },
+  "geoJsonLayers": [
+    {
+      "id": "nyc-layer",
+      "name": "NYCBoroughs",
+      "url": "/geojson/NYC/boroughs.geojson",
+      "style": {
+        "color": "#4E3FC8",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    }
+  ]
+}
+```
+
+- **`mapSettings`**: Contains your default map center & zoom.
+- **`geoJsonLayers`**: Each layer has an `id`, a `name`, a `url` path to the `.geojson` file, and an optional `style`.
+
+> ![NOTE]
+> You can serve multiple layers by adding them to this array. The `UI` can toggle them `on/off`.
+
+### **B. Adding a New City or Additional Layers**
+
+1. **Copy** or place a new GeoJSON file in `public/geojson/<CityName>/<fileName>.geojson`.
+2. **Edit** `public/config/mapConfig.json` to add your new layer under `geoJsonLayers` with the correct relative path in
+   `url`.
+3. **Adjust** the map `center` and `zoom` in `mapSettings` if you want your new city to be the default view.
+
+### **Data Flow** (High-Level)
+
+1. **User Draws** a polygon on the map → This triggers an internal "features" state update in React.
+2. **Frontend** sends these “features” + time constraints to the **Geospatial Node.js Backend** at
+   `http://<host>:4000/api/trips/query`.
+3. **Geospatial Backend** returns the filtered trip data → The **Frontend** either displays them as markers or a
+   heatmap.
+4. **User** triggers a chart (e.g., “Trip Duration Histogram”) → The **Frontend** sends a CSV of the filtered trips to
+   the **Data Analysis Django Backend** at `http://<host>:8000/api/visualisation/<analysis-endpoint>`.
+5. **Django Backend** returns chart JSON → The **Frontend** uses Plotly to render the chart.
+
+### **C. Backend Configuration**
+
+We recommend checking the **GeoSpatial Node.js Backend** and **Data Analysis Django Backend** READMEs
+for their respective configurations.
+
+</details>
 
 ---
 
@@ -86,108 +167,123 @@ the following first _alpha_ version is nevertheless important to show that it is
 ### **Pre-requisites**
 
 - **Node.js** installed on your system.
-- **npm** package manager installed.
+- **npm** or **yarn** package manager installed.
+- **(Required)** Backends running for full functionality:
+    - [GeoSpatial Node.js Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
+    - [Data Analysis Django Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
 
-### **Frontend Setup**
+### **Setup**
 
-1. Clone the repository.
+1. **Clone** this repository:
    ```bash
    git clone https://github.com/VIDA-NYU/Taxis-Vis-Frontend.git
    cd Taxis-Vis-Frontend
    ```
-2. Install dependencies.
+2. **Install** dependencies:
    ```bash
    npm install
    ```
-3. Start the development server.
+3. **Start** the development server:
    ```bash
    npm start
    ```
+4. **Open** `http://localhost:3000` in your browser.
+
+> ![NOTE]
+> If you need to point to different backend URLs, see `src/config/apiUrls.js` or adjust your environment variables. By
+> default, it expects the Node.js backend on `localhost:4000` and the Django backend on `localhost:8000`.
+
+### 🎛️ **Configuration Management Example**
 
 <details>
-<summary>🔗 Backend Dependencies ⏭️ MANDATORY ⏮️ </summary>
+<summary> Let's follow up with the Config. management tutorial above, yet with a proper ex. ➡️ </summary>
 
-### **Pre-requisites**
+## 💡 **Example Workflow**: Adding a `taxis_london.duckdb` Dataset
 
-- **Node.js** installed on your system.
-- **npm** package manager installed.
-
-### ⚙️ **Backend Setup**
-
-#### **GeoSpatial Backend**
-
-Read first ➡️ [GeoSpatial Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
-
-1. Install Node.js on your machine.
-2. Navigate to the GeoSpatial Backend directory and run:
-   ```bash
-   npm install
+1. **Place** a new GeoJSON (e.g., `london_neighborhoods.geojson`) in `public/geojson/London`.
+2. **Create** a new `mapConfig.json` (or modify the existing one) with:
+   ```json
+   {
+     "mapSettings": {
+       "tileLayer": "cartoLight",
+       "center": [51.5074, -0.1278],
+       "zoom": 11
+     },
+     "geoJsonLayers": [
+       {
+         "id": "london-neighborhoods",
+         "name": "London Neighborhoods",
+         "url": "/geojson/London/london_neighborhoods.geojson",
+         "style": {
+           "color": "#BADA55",
+           "weight": 2,
+           "opacity": 0.5
+         }
+       }
+     ]
+   }
    ```
-3. Start the server with:
-   ```bash
-   node server.js
-   ```
-
-#### **Data Analysis Backend**
-
-Read first ➡️ [Data Analysis Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
-
-1. Lock and Sync the backend with the following commands:
-   ```bash
-   uv lock
-   uv sync
-   ```
-
-2. Start the server with:
-   ```bash
-   uv run python manage.py runserver
-   ```
+3. **Backend** side: create or modify the `config.json` in the Node.js geospatial backend to point to
+   `taxis_london.duckdb` and set `filePath` to your London neighborhoods GeoJSON. Yet, we highly recommend checking the*
+   *GeoSpatial Node.js Backend** README for more details.
+4. **Restart** everything. The map now shows the London area and queries the `taxis_london.duckdb` behind the scenes.
 
 </details>
-
-> [!IMPORTANT]
-> If you have none of the aforementioned backends, you can still run the frontend yet interactive
-> features will not work.
 
 ---
 
 ## Design Philosophy 💡
 
-The **Taxis Vis** project builds on the Taxis Vis paper's insights with a structured, future-proof approach and modern
-technology stack. Our philosophy is based on three main principles:
+We started recreating the `Taxis Vis` with the goal of relying on `flexible`, well-supported `open-source` tools at all
+corner of the project.
 
-### **1. Embracing Flexibility and Open Source Tools**
+Choosing `React`, `Leaflet`, and `Plotly` as our core UI-front-end technologies enables us to quickly adapt to new
+requirements while ensuring that they are well maintained and actively updated.
+Similarly, the `geospatial-computation-side` relies on cutting-edge geo-spatial database management such as `DuckDB` and
+heavy-API GeoSpatial computation techniques available via `Turf.JS`, which is also well-maintained and receiving regular
+updates.
+Hence, by doing so as well on the `data-analysis` side with `Python`, `Django for API` and `Pandas` for tabular-data
+management, we benefit from each library's vibrant ecosystem allowing
+us to re-create substantial paper concepts without significant barriers and in a shorter (to some extent) time frame.
 
-We prefer flexible, open-source tools that can be easily adapted to a wide range of use cases. The tools used in this
-project are carefully chosen based on:
+The whole idea is to thus **learn**, be able to **reproduce** and provide **frameworks** for _future research and
+industry projects_ in
+this direction as technology evolves fast and the need for such tools (to be maintained and open-source) is growing
+exponentially.
 
-- **Community Support**: A large number of GitHub stars.
-- **Active Maintenance**: Recent commits to increase chances for long-term viability.
-- **Ease of Use**: APIs that are simple, intuitive, and/or heavy on features, allowing for rapid development.
+Lastly, this philosophy allows us to `create` `reusable`, `maintainable` `libraries` of `urban-based` code that can be
+easily repurposed and expanded for future research and industry-based projects.
+To end with an example. While `Leaflet`, `MapBox`, `MapLibre`, and others propose methods for drawing polygons on a
+displayed map. We were _frustrated_ by the lack of ease of use for customisation.
+In the same vein, callback management is well done, but not with ease-of-use accessibility. Hence, our toolbar panel for
+`Taxis Vis` enables easy drawing and management of polygons, lines, and callbacks,
+with visual customisation options. This is all accomplished by relying on these massive `GIS/NON-GIS`
+well-maintained-and-updated libraries; Yet, now
+we can reuse this Toolbar on any future project without the hurdle of re-implementing it from scratch.
 
-### **2. Combining Tools to Gain Complex Insights**
+Scaling this to `N` components, `J` backends, and so on might result in a well-maintained, easily extendable, and
+reusable codebase for future _urban-based_ projects, if not an entire new ecosystem! 🌍
 
-The paper's capabilities require multiple tools, such as spatial selections, queries, and temporal constraints.
-There is no single open-source solution that, to the best of the authors' knowledge, provides all of these capabilities
-out of the box.
-**Taxis Vis** utilises various technologies to replicate and enhance the paper's functionality.
+---
 
-### **3. Creating Generic and Reusable Components**
+## Limitations 🚧
 
-This project seeks – in parallel of reproducing the so-chosen paper – to abstract and generalise components for reuse in
-the urban research community,
-including **@VIDA-NYU**.
+| **Limitation**            | **Details**                                                                                                                                                                                                        |
+|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Backend Dependency**    | Most features rely on the Node.js + DuckDB backend (for spatial queries) and Django (for analytics). Without them, you only see the base map and UI.                                                               |
+| **Large Data**            | If the returned dataset is extremely large, performance in the browser may degrade.                                                                                                                                |
+| **Cross-Browser Testing** | Primarily tested on modern Arc (By The Browser Company on Chromium), Safari, Chrome. Might require polyfills for older browsers or Edge/IE (unverified). Firefox has not yet been tested either.                   |
+| **Other Map Management**  | The current vers. uses `Leaflet` for the map. If you would like to use `Mapbox`/`MapLibre` or any other map library, we are happy for a pull request. Yet it will have to rework the entire toolbar drawing tools. |
 
-Consider the **customisable toolbar**: Leaflet and react-Leaflet provides basic
-drawing and spatial querying, but lacks easy access to customisation as well as event handling.
-We can think contributing a very lightweight wrapper that would aid the urban analytics community by
-developing a reusable, modular toolbar for _spatial selection_ _(and the callbacks associated)_ and queries (and the
-callbacks associated) – While such component
-relies on Leaflet and react-Leaflet for the core functionality which are widely used and
-well-maintained ☀️.
+---
 
-**Scale this to all the other components**, and we have a _powerful_, _flexible_, and _reusable_ set of tools for urban
-analytics
-research – or even beyond! 👀
+## 📖 **Further Reading**
 
-### Cheers! 🎉
+- [GeoSpatial Node.js Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
+- [Data Analysis Django Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
+- [The Original Paper (IEEE)](https://ieeexplore.ieee.org/abstract/document/6634127/)
+
+---
+
+**Happy Exploring!**  
+_The Taxis Vis Team_

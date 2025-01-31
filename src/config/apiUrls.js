@@ -9,5 +9,6 @@ export const API_URLS = {
     NEIGHBORHOODS: {
         DESCRIBE: `${GEOSPATIAL_BACKEND}/neighborhoods/describe`,
     },
+    CONFIG: `${GEOSPATIAL_BACKEND}/config`,
     VISUALIZATION: `${DATA_ANALYSIS_BACKEND}/visualisation`,
 };
