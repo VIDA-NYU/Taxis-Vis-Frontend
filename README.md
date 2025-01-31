@@ -29,10 +29,13 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 <details>
 <summary> 📢 Click here to expand! ➡️ </summary>
 
-- **Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest—provided you have
+- **🎉DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis Vis.
+  See the last section of this README for more info.
+- **🌎Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest—provided you
+  have
   the taxi data and minimal geojson resources. The system's architecture is flexible enough to accommodate various
   schemas and polygon data with only small config changes.
-- **Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like React, Leaflet,
+- **✅Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like React, Leaflet,
   DuckDB, Django, and more. We’ve eliminated high hurdles typically seen for example by the need of the custom DB within
   the paper, years ago.
 
@@ -274,6 +277,27 @@ reusable codebase for future _urban-based_ projects, if not an entire new ecosys
 | **Large Data**            | If the returned dataset is extremely large, performance in the browser may degrade.                                                                                                                                |
 | **Cross-Browser Testing** | Primarily tested on modern Arc (By The Browser Company on Chromium), Safari, Chrome. Might require polyfills for older browsers or Edge/IE (unverified). Firefox has not yet been tested either.                   |
 | **Other Map Management**  | The current vers. uses `Leaflet` for the map. If you would like to use `Mapbox`/`MapLibre` or any other map library, we are happy for a pull request. Yet it will have to rework the entire toolbar drawing tools. |
+
+---
+
+# **🎉 Adding Washington DC & NYC Examples**
+
+We now have **two** example READMEs illustrating how to integrate **DC** or **NYC** taxi data into Taxis Vis:
+
+1. **[DC Example](./examples/DC/example.md)** – Shows how to import Washington DC taxi data, create a DuckDB database,
+   and configure the frontend+backend.
+2. **[NYC Example](./examples/NYC/example.md)** – Demonstrates importing NYC taxi data, sampling large CSV files, and
+   setting up multiple GeoJSON layers (boroughs, neighborhoods, parks).
+
+These examples are located in the `examples/` directory of this repository. They serve as a **step-by-step reference**
+if you're configuring Taxis Vis to work with new city data or simply want to see how we handle data conversion, DuckDB
+creation, and geojson layering.
+
+> [!TIP]
+> **Try them out**:
+> 1. **Clone** the project.
+> 2. Follow the **DC** or **NYC** instructions (or adapt them to your city of choice).
+> 3. Enjoy your newly integrated taxi trip dataset! 🎉
 
 ---
 
