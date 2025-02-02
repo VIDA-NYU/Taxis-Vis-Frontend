@@ -1,12 +1,9 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {useMap} from "react-leaflet";
-import {parseDate} from "@internationalized/date";
 import {
     Hail,
     Tour,
     Moving,
-    EditRoad,
     RemoveRoad,
     ExpandLess,
     ExpandMore,
@@ -14,17 +11,14 @@ import {
 } from "@mui/icons-material";
 import {DateRangePicker} from "@adobe/react-spectrum";
 import "./ToolbarPanel.styles.css";
-import {fetchAvailableDateRange} from "./ToolbarPanel.services";
 import ToolbarPanelButton from "./ToolbarPanel.button";
 import ToolbarPanelSlider from "./ToolbarPanel.slider";
-import {useLeafletDrawHandlers} from "./ToolbarPanel.useLeafletDrawHandlers";
-import L from "leaflet";
-
-import "leaflet/dist/leaflet.css";
-import "leaflet-draw/dist/leaflet.draw.css";
+import {API_URLS} from "../../config/apiUrls";
+import useMapBoxDrawHandler from "./ToolbarPanel.useMapBoxDrawHandler";
+import {fetchDateRange} from "./ToolbarPanel.services";
 
 const ToolbarPanel = ({
-                          mapApiUrl = "http://localhost:4000/api/trips/date-range",
+                          mapApiUrl = API_URLS.TRIPS.DATE_RANGE,
                           features,
                           onCreate,
                           onUpdate,
@@ -32,50 +26,28 @@ const ToolbarPanel = ({
                           onDateRangeChange,
                           bufferDistance,
                           setBufferDistance,
-                          defaultDrawingColorPickup = "blue",
-                          defaultDrawingColorDropoff = "red",
-                          defaultDrawingColorDirectional = "green",
+                          map,
+                          draw,
                       }) => {
-    const map = useMap();
-    const drawnItemsRef = useRef(new L.FeatureGroup());
-
     const [activeButton, setActiveButton] = useState(null);
     const [isMinimized, setIsMinimized] = useState(false);
     const [initialDateRange, setInitialDateRange] = useState({});
     const [localDateRange, setLocalDateRange] = useState({});
+
     const isSliderVisible = activeButton === "directional";
     const isDatePickerVisible = activeButton === "calendar";
 
-    const hasPickupAndDropoff = features && features?.pickup?.length > 0 && features?.dropoff?.length > 0;
+    const hasPickupAndDropoff =
+        features &&
+        features.pickup &&
+        features.pickup.length > 0 &&
+        features.dropoff &&
+        features.dropoff.length > 0;
     const hasAnyFeature =
-        features && (
-            features.pickup.length > 0 ||
-            features.dropoff.length > 0 ||
-            features.directional.length > 0);
-
-    const {activateDrawing, activateEditing, activateDeleting} = useLeafletDrawHandlers({
-        map,
-        drawnItemsRef,
-        onCreate,
-        onUpdate,
-        onDelete,
-        setActiveButton,
-        defaultPickupColor: defaultDrawingColorPickup,
-        defaultDropoffColor: defaultDrawingColorDropoff,
-        defaultDirectionalColor: defaultDrawingColorDirectional,
-    });
-
-    useEffect(() => {
-        (async () => {
-            const data = await fetchAvailableDateRange(mapApiUrl);
-            if (data?.startDate && data?.endDate) {
-                const start = parseDate(data.startDate.split("T")[0]);
-                const end = parseDate(data.endDate.split("T")[0]);
-                setInitialDateRange({start, end});
-                setLocalDateRange({start, end});
-            }
-        })();
-    }, [mapApiUrl]);
+        features &&
+        ((features.pickup && features.pickup.length > 0) ||
+            (features.dropoff && features.dropoff.length > 0) ||
+            (features.directional && features.directional.length > 0));
 
     const handleButtonClick = (buttonType, action) => {
         setActiveButton((prev) => {
@@ -84,6 +56,58 @@ const ToolbarPanel = ({
             return nextState;
         });
     };
+
+    const activateDrawing = (mode) => {
+        if (!draw) return;
+        if (mode === "pickup") {
+            draw.changeMode("pickup_mode");
+        } else if (mode === "dropoff") {
+            draw.changeMode("dropoff_mode");
+        } else if (mode === "directional") {
+            draw.changeMode("directional_mode");
+        }
+    };
+
+    const handleDelete = () => {
+        if (hasAnyFeature) {
+            if (!draw) return;
+
+            setActiveButton((prev) => (prev === "delete" ? null : "delete"));
+            let selectedIds = draw.getSelectedIds();
+
+            if (selectedIds.length === 0) {
+                const allFeatures = draw.getAll().features;
+                if (allFeatures.length > 0) {
+                    selectedIds = [allFeatures[0].id];
+                    draw.changeMode('simple_select', {featureIds: selectedIds});
+                }
+            }
+            draw.trash();
+            setActiveButton(null);
+            draw.changeMode('simple_select');
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const dateRange = await fetchDateRange(mapApiUrl);
+                setInitialDateRange(dateRange);
+                setLocalDateRange(dateRange);
+            } catch (error) {
+            }
+        })();
+    }, [mapApiUrl]);
+
+    useMapBoxDrawHandler({
+        draw,
+        map,
+        onCreate,
+        onUpdate,
+        onDelete,
+        activeButton,
+        setActiveButton,
+    });
 
     return (
         <>
@@ -103,9 +127,13 @@ const ToolbarPanel = ({
                         <ToolbarPanelButton
                             icon={<Hail/>}
                             title="Draw A Pickup ROI"
-                            onClick={() => handleButtonClick("pickup", (nextState) => nextState && activateDrawing("pickup"))}
+                            onClick={() =>
+                                handleButtonClick("pickup", (nextState) => {
+                                    if (nextState) activateDrawing("pickup");
+                                })
+                            }
                             isActive={activeButton === "pickup"}
-                            isDisabled={features.pickup.length > 0}
+                            isDisabled={features.pickup && features.pickup.length > 0}
                             extraClasses="pickup"
                             ariaLabel="Draw A Pickup ROI"
                         />
@@ -113,9 +141,13 @@ const ToolbarPanel = ({
                         <ToolbarPanelButton
                             icon={<Tour/>}
                             title="Draw A Dropoff ROI"
-                            onClick={() => handleButtonClick("dropoff", (nextState) => nextState && activateDrawing("dropoff"))}
+                            onClick={() =>
+                                handleButtonClick("dropoff", (nextState) => {
+                                    if (nextState) activateDrawing("dropoff");
+                                })
+                            }
                             isActive={activeButton === "dropoff"}
-                            isDisabled={features.dropoff.length > 0}
+                            isDisabled={features.dropoff && features.dropoff.length > 0}
                             extraClasses="dropoff"
                             ariaLabel="Draw A Dropoff ROI"
                         />
@@ -124,43 +156,23 @@ const ToolbarPanel = ({
                             icon={<Moving/>}
                             title="Draw A Directional Line"
                             onClick={() =>
-                                handleButtonClick(
-                                    "directional",
-                                    (nextState) => {
-                                        if (nextState) activateDrawing("directional");
-                                    }
-                                )
+                                handleButtonClick("directional", (nextState) => {
+                                    if (nextState) activateDrawing("directional");
+                                })
                             }
                             isActive={activeButton === "directional"}
-                            isDisabled={!hasPickupAndDropoff || features.directional.length > 0}
+                            isDisabled={
+                                !hasPickupAndDropoff ||
+                                (features.directional && features.directional.length > 0)
+                            }
                             extraClasses="directional"
                             ariaLabel="Draw A Directional Line"
                         />
 
                         <ToolbarPanelButton
-                            icon={<EditRoad/>}
-                            title="Edit Existing ROI"
-                            onClick={() => {
-                                if (hasAnyFeature) {
-                                    activateEditing();
-                                    setActiveButton((prev) => (prev === "edit" ? null : "edit"));
-                                }
-                            }}
-                            isActive={activeButton === "edit"}
-                            isDisabled={!hasAnyFeature}
-                            extraClasses="action"
-                            ariaLabel="Edit Existing ROI"
-                        />
-
-                        <ToolbarPanelButton
                             icon={<RemoveRoad/>}
                             title="Delete Existing ROI"
-                            onClick={() => {
-                                if (hasAnyFeature) {
-                                    activateDeleting();
-                                    setActiveButton((prev) => (prev === "delete" ? null : "delete"));
-                                }
-                            }}
+                            onClick={handleDelete}
                             isActive={activeButton === "delete"}
                             isDisabled={!hasAnyFeature}
                             extraClasses="action"
@@ -172,8 +184,9 @@ const ToolbarPanel = ({
                             title="Select Date Range"
                             onClick={() => {
                                 const nextState = !isDatePickerVisible;
-                                setActiveButton((prev) => (prev === "calendar" ? null : "calendar"));
-
+                                setActiveButton((prev) =>
+                                    prev === "calendar" ? null : "calendar"
+                                );
                                 if (!nextState && onDateRangeChange) {
                                     onDateRangeChange(localDateRange);
                                 }
@@ -231,6 +244,8 @@ ToolbarPanel.propTypes = {
     defaultDrawingColorPickup: PropTypes.string,
     defaultDrawingColorDropoff: PropTypes.string,
     defaultDrawingColorDirectional: PropTypes.string,
+    map: PropTypes.object,
+    draw: PropTypes.object,
 };
 
 export default ToolbarPanel;
