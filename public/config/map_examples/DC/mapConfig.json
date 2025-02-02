@@ -2,6 +2,7 @@
   "mapSettings": {
     "tileLayer": "mapbox://styles/mapbox/navigation-night-v1",
     "center": "dc",
+    "threeDEnabled": false,
     "zoom": 11
   },
   "geoJsonLayers": [

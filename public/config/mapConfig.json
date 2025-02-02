@@ -1,6 +1,7 @@
 {
   "mapSettings": {
     "tileLayer": "streets-v12-2D",
+    "threeDEnabled": false,
     "center": "nyc",
     "zoom": 11
   },
