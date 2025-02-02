@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
+import {add3DBuildingsLayer, toggle3DBuildingsVisibility} from "./GeoJsonLayersPanel.three_d_buildings";
 import "./GeoJsonLayersPanel.styles.css";
 
 const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
@@ -20,57 +21,67 @@ const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
             return acc;
         }, {});
         setVisibility(updated);
-    }, [layers]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [layers]);
 
     useEffect(() => {
         if (!map) return;
+
         layers.forEach((layer) => {
-            if (!map.getSource(layer.id)) {
-                map.addSource(layer.id, {
-                    type: "geojson",
-                    data: layer.geojsonData,
-                });
+            if (layer.id === "3d-buildings") {
+                add3DBuildingsLayer(map);
             } else {
-                map.getSource(layer.id).setData(layer.geojsonData);
-            }
+                if (!map.getSource(layer.id)) {
+                    map.addSource(layer.id, {
+                        type: "geojson",
+                        data: layer.geojsonData,
+                    });
+                } else {
+                    map.getSource(layer.id).setData(layer.geojsonData);
+                }
 
-            const fillLayerId = `${layer.id}-fill`;
-            if (!map.getLayer(fillLayerId)) {
-                map.addLayer({
-                    id: fillLayerId,
-                    type: "fill",
-                    source: layer.id,
-                    layout: {visibility: visibility[layer.id] ? "visible" : "none"},
-                    paint: {
-                        "fill-color": layer.style?.color || "blue",
-                        "fill-opacity": layer.style?.opacity ?? 0.6,
-                    },
-                });
-            } else {
-                map.setLayoutProperty(fillLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
-            }
+                const fillLayerId = `${layer.id}-fill`;
+                if (!map.getLayer(fillLayerId)) {
+                    map.addLayer({
+                        id: fillLayerId,
+                        type: "fill",
+                        source: layer.id,
+                        layout: {visibility: visibility[layer.id] ? "visible" : "none"},
+                        paint: {
+                            "fill-color": layer.style?.color || "blue",
+                            "fill-opacity": layer.style?.opacity ?? 0.6,
+                        },
+                    });
+                } else {
+                    map.setLayoutProperty(fillLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
+                }
 
-            const outlineLayerId = `${layer.id}-outline`;
-            if (!map.getLayer(outlineLayerId)) {
-                map.addLayer({
-                    id: outlineLayerId,
-                    type: "line",
-                    source: layer.id,
-                    layout: {visibility: visibility[layer.id] ? "visible" : "none"},
-                    paint: {
-                        "line-color": layer.style?.color || "blue",
-                        "line-width": layer.style?.weight || 2,
-                        "line-opacity": layer.style?.opacity ?? 0.6,
-                    },
-                });
-            } else {
-                map.setLayoutProperty(outlineLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
+                const outlineLayerId = `${layer.id}-outline`;
+                if (!map.getLayer(outlineLayerId)) {
+                    map.addLayer({
+                        id: outlineLayerId,
+                        type: "line",
+                        source: layer.id,
+                        layout: {visibility: visibility[layer.id] ? "visible" : "none"},
+                        paint: {
+                            "line-color": layer.style?.color || "blue",
+                            "line-width": layer.style?.weight || 2,
+                            "line-opacity": layer.style?.opacity ?? 0.6,
+                        },
+                    });
+                } else {
+                    map.setLayoutProperty(outlineLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
+                }
             }
         });
     }, [layers, map, visibility]);
 
     const toggleVisibility = (id) => {
-        setVisibility((prev) => ({...prev, [id]: !prev[id]}));
+        if (id === "3d-buildings") {
+            const isVisible = toggle3DBuildingsVisibility(map);
+            setVisibility((prev) => ({...prev, [id]: isVisible}));
+        } else {
+            setVisibility((prev) => ({...prev, [id]: !prev[id]}));
+        }
     };
 
     const toggleMinimized = () => {
@@ -97,8 +108,10 @@ const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
                 <div className="geo_json_layers-list">
                     {layers.map((layer) => (
                         <div key={layer.id} className="geo_json_layers-item" onClick={() => toggleVisibility(layer.id)}>
-                            <div className="geo_json_layers-icon"
-                                 style={{backgroundColor: layer.style?.color || "#000"}}/>
+                            <div
+                                className="geo_json_layers-icon"
+                                style={{backgroundColor: layer.style?.color || (layer.id === "3d-buildings" ? "#aaa" : "#000")}}
+                            />
                             <span className="geo_json_layers-name">{layer.name}</span>
                             <input
                                 type="checkbox"

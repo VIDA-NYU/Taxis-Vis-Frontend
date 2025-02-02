@@ -39,19 +39,20 @@ const Explore = () => {
         plotLayout: null
     });
 
-    const getNewDateRange = (newRange) => {
-        setDateRange({
-            start: newRange.start ? newRange.start.toDate() : null,
-            end: newRange.end ? newRange.end.toDate() : null
-        });
-    }
-
     useEffect(() => {
         (async () => {
             const config = await loadMapConfig();
             setMapConfig(config?.mapSettings);
             const layers = await loadGeoJsonLayers(config?.geoJsonLayers || []);
-            console.log("layers", layers);
+
+            if (config?.mapSettings?.threeDEnabled === true) {
+                layers.push({
+                    id: "3d-buildings",
+                    name: "3D Buildings",
+                    type: "fill-extrusion"
+                });
+            }
+
             setGeoJsonLayers(layers);
         })();
     }, []);
