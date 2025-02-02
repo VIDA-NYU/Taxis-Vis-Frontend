@@ -1,14 +1,26 @@
 {
-  "osm": {
-    "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    "attribution": "&copy; OpenStreetMap contributors"
+  "streets-v12-2D": {
+    "styleUrl": "mapbox://styles/mapbox/streets-v12"
   },
-  "stamenToner": {
-    "url": "https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
-    "attribution": "Map tiles by Stamen Design, CC BY 3.0 &mdash; Map data &copy; OpenStreetMap contributors"
+  "outdoors-v12-2D": {
+    "styleUrl": "mapbox://styles/mapbox/outdoors-v12"
   },
-  "cartoLight": {
-    "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    "attribution": "&copy; OpenStreetMap contributors &copy; CARTO"
+  "light-v11": {
+    "styleUrl": "mapbox://styles/mapbox/light-v11"
+  },
+  "dark-v11": {
+    "styleUrl": "mapbox://styles/mapbox/dark-v11"
+  },
+  "satellite-v9": {
+    "styleUrl": "mapbox://styles/mapbox/satellite-v9"
+  },
+  "satellite-streets-v12": {
+    "styleUrl": "mapbox://styles/mapbox/satellite-streets-v12"
+  },
+  "navigation-day-v1": {
+    "styleUrl": "mapbox://styles/mapbox/navigation-day-v1"
+  },
+  "navigation-night-v1": {
+    "styleUrl": "mapbox://styles/mapbox/navigation-night-v1"
   }
 }
