@@ -4,9 +4,9 @@
   <h4>Frontend-side 🎨</h4>
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=Leaflet&logoColor=white)
+![Mapbox GL JS](https://img.shields.io/badge/Mapbox%20GL%20JS-3BB3E4?style=for-the-badge&logo=mapbox&logoColor=white)
 ![Plotly.js](https://img.shields.io/badge/Plotly.js-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.2.0_alpha-red?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-0.3.0_alpha-red?style=for-the-badge)
 </div>
 
 ______
@@ -28,17 +28,25 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 
 > [!IMPORTANT]
 > ### **Latest News**
+> - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have finally migrated from **Leaflet** to **Mapbox GL JS** for
+    enhanced map performance, interactivity, and styling options.  
+    While Mapbox now requires an API access token, it remains largely **free** for projects like **Taxis Vis**, where
+    the expected usage is well within the **50,000 free map loads per month**.  
+    We do not utilise any other premium Mapbox services beyond tile serving, making this transition seamless for
+    users.  
+    Make sure to configure your `.env` file with a valid **Mapbox API token** (see the setup instructions below).
 > - **🎉 DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis
     Vis.  
     > You can find these in the `examples/` directory of this repository.
 > - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest —
-    provided
-    > you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to accommodate
+    provided  
+    > you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to
+    accommodate  
     > various schemas and polygon data with small config changes.
-> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like
-    React,
-    > Leaflet, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions, such as
-    > specialized or custom databases.
+> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like  
+    React, Mapbox GL JS, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions,
+    such  
+    as specialized or custom databases.
 
 ## 🚀 **Overview**
 
@@ -51,16 +59,16 @@ It communicates with:
 2. A **Data Analysis Python Django + Pandas Backend** – performing analyses & generating chart data.
 
 While not fully replicating every feature from the paper, this **proof-of-concept** demonstrates the feasibility of
-developing a robust, real-time, interactive taxi data exploration tool using _today_ tools without weeks or month
-of development time.
+developing a robust, real-time, interactive taxi data exploration tool using _today_ tools without weeks or months of
+development time.
 
 ---
 
 ## ☀️ **Key Features**
 
 - **Spatial Selections** – Draw polygons or lines to define **Pickup** or **Dropoff** regions and query them.
-- **Spatial Queries** – Filter trips based on spatial relationships (e.g., &cup; of **Pickup** and **Dropoff** regions,*
-  *Directional** queries, etc.).
+- **Spatial Queries** – Filter trips based on spatial relationships (e.g., union of **Pickup** and **Dropoff** regions,
+  **Directional** queries, etc.).
 - **Temporal Constraints** – Combine **time ranges** with your spatial queries to refine trip filtering.
 - **Data Analysis** – Generate histograms, box plots, scatter plots, and other charts from the filtered data.
 
@@ -160,11 +168,25 @@ for their respective configurations.
    ```bash
    npm install
    ```
-3. **Start** the development server:
+3. **Create a `.env` file and configure Mapbox access**:
+    - You need a **Mapbox API token** to use this project. If you don’t have one, sign up
+      at [Mapbox](https://account.mapbox.com/access-tokens/) to generate an access token.
+    - Inside the project root, create a `.env` file:
+      ```bash
+      touch .env
+      ```
+    - Open the `.env` file and add:
+      ```plaintext
+      REACT_APP_MAPBOX_TOKEN=your-mapbox-access-token-here
+      ```
+    - Replace `your-mapbox-access-token-here` with your actual Mapbox token. See
+      further  [Mapbox Access Token](https://docs.mapbox.com/help/getting-started/access-tokens/).
+
+4. **Start** the development server:
    ```bash
    npm start
    ```
-4. **Open** `http://localhost:3000` in your browser.
+5. **Open** `http://localhost:3000` in your browser.
 
 > [!NOTE]
 > If you need to point to different backend URLs, see `src/config/apiUrls.js` or adjust your environment variables. By
@@ -201,8 +223,8 @@ for their respective configurations.
    }
    ```
 3. **Backend** side: create or modify the `config.json` in the Node.js geospatial backend to point to
-   `taxis_london.duckdb` and set `filePath` to your London neighborhoods GeoJSON. Yet, we highly recommend checking the*
-   *GeoSpatial Node.js Backend** README for more details.
+   `taxis_london.duckdb` and set `filePath` to your London neighborhoods GeoJSON. (Refer to the GeoSpatial Node.js
+   Backend README.)
 4. **Restart** everything. The map now shows the London area and queries the `taxis_london.duckdb` behind the scenes.
 
 </details>
@@ -211,94 +233,50 @@ for their respective configurations.
 
 ## Design Philosophy 💡
 
-We started recreating the `Taxis Vis` with the goal of relying on `flexible`, well-supported `open-source` tools at all
-corner of the project.
+We started recreating `Taxis Vis` with the goal of relying on flexible, well-supported open-source tools at every corner
+of the project.
 
-Choosing `React`, `Leaflet`, and `Plotly` as our core UI-front-end technologies enables us to quickly adapt to new
-requirements while ensuring that they are well maintained and actively updated.
-Similarly, the `geospatial-computation-side` relies on cutting-edge geo-spatial database management such as `DuckDB` and
-heavy-API GeoSpatial computation techniques available via `Turf.JS`, which is also well-maintained and receiving regular
-updates.
-Hence, by doing so as well on the `data-analysis` side with `Python`, `Django for API` and `Pandas` for tabular-data
-management, we benefit from each library's vibrant ecosystem allowing
-us to re-create substantial paper concepts without significant barriers and in a shorter (to some extent) time frame.
+Choosing **React**, **Mapbox GL JS**, and **Plotly.js** as our core UI technologies enables us to quickly adapt to new
+requirements while ensuring that they are well maintained and actively updated. Similarly, the geospatial computation
+side relies on cutting-edge technologies like **DuckDB** and libraries such as **Turf.js**, while our data analysis side
+leverages **Python**, **Django**, and **Pandas**. This combination allows us to reproduce substantial paper concepts
+without significant overhead, and in a shorter timeframe.
 
-The whole idea is to thus **learn**, be able to **reproduce** and provide **frameworks** for _future research and
-industry projects_ in
-this direction as technology evolves fast and the need for such tools (to be maintained and open-source) is growing
-exponentially.
-
-Lastly, this philosophy allows us to `create` `reusable`, `maintainable` `libraries` of `urban-based` code that can be
-easily repurposed and expanded for future research and industry-based projects.
-To end with an example. While `Leaflet`, `MapBox`, `MapLibre`, and others propose methods for drawing polygons on a
-displayed map. We were _frustrated_ by the lack of ease of use for customisation.
-In the same vein, callback management is well done, but not with ease-of-use accessibility. Hence, our toolbar panel for
-`Taxis Vis` enables easy drawing and management of polygons, lines, and callbacks,
-with visual customisation options. This is all accomplished by relying on these massive `GIS/NON-GIS`
-well-maintained-and-updated libraries; Yet, now
-we can reuse this Toolbar on any future project without the hurdle of re-implementing it from scratch.
-
-Scaling this to `N` components, `J` backends, and so on might result in a well-maintained, easily extendable, and
-reusable codebase for future _urban-based_ projects, if not an entire new ecosystem! 🌍
+This philosophy empowers us to create reusable, maintainable libraries of urban-based code that can be easily repurposed
+and extended for future research and industry projects.
 
 ---
 
 ## Limitations 🚧
 
-| **Limitation**            | **Details**                                                                                                                                                                                                        |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Backend Dependency**    | Most features rely on the Node.js + DuckDB backend (for spatial queries) and Django (for analytics). Without them, you only see the base map and UI.                                                               |
-| **Large Data**            | If the returned dataset is extremely large, performance in the browser may degrade.                                                                                                                                |
-| **Cross-Browser Testing** | Primarily tested on modern Arc (By The Browser Company on Chromium), Safari, Chrome. Might require polyfills for older browsers or Edge/IE (unverified). Firefox has not yet been tested either.                   |
-| **Other Map Management**  | The current vers. uses `Leaflet` for the map. If you would like to use `Mapbox`/`MapLibre` or any other map library, we are happy for a pull request. Yet it will have to rework the entire toolbar drawing tools. |
+| **Limitation**            | **Details**                                                                                                                                          |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Backend Dependency**    | Most features rely on the Node.js + DuckDB backend (for spatial queries) and Django (for analytics). Without them, you only see the base map and UI. |
+| **Large Data**            | Extremely large datasets may degrade performance in the browser.                                                                                     |
+| **Cross-Browser Testing** | Primarily tested on modern browsers (Chrome, Safari, etc.). Older browsers might require polyfills.                                                  |
+| **Other Map Management**  | The current version uses Mapbox GL JS. If you would like to use another map library, it will require reworking the toolbar drawing tools.            |
 
 ---
 
 # **🎉 Adding Washington DC & NYC Examples**
 
-We now have **two** example READMEs illustrating how to integrate **DC** or **NYC** taxi data into Taxis Vis:
+We now have two example READMEs illustrating how to integrate DC or NYC taxi data into Taxis Vis:
 
 1. **[DC Example](./examples/DC/example.md)** – Shows how to import Washington DC taxi data, create a DuckDB database,
-   and configure the frontend+backend.
+   and configure the frontend and backend.
 2. **[NYC Example](./examples/NYC/example.md)** – Demonstrates importing NYC taxi data, sampling large CSV files, and
    setting up multiple GeoJSON layers (boroughs, neighborhoods, parks).
 
-These examples are located in the `examples/` directory of this repository. They serve as a **step-by-step reference**
-if you're configuring Taxis Vis to work with new city data or simply want to see how we handle data conversion, DuckDB
-creation, and geojson layering.
+These examples are located in the `examples/` directory. They serve as a step-by-step reference if you're configuring
+Taxis Vis for a new city or wish to see how we handle data conversion, DuckDB creation, and geojson layering.
 
 > [!TIP]
 > **Try them out**:
 > 1. **Clone** the project.
-> 2. Follow the **DC** or **NYC** instructions (or adapt them to your city of choice).
+> 2. Follow the **DC** or **NYC** instructions (or adapt them for your city).
 > 3. Enjoy your newly integrated taxi trip dataset! 🎉
 
 ---
-
-## 🚴 **Future Work & Open Research Questions**
-
-<details>
-<summary> 📢 Click here to expand! ➡️ </summary>
-
-**Practice-based Enhancements**
-
-- **Concurrency on the Geospatial Backend**: Explore how DuckDB in read-only mode can handle more parallel queries. (
-  Full concurrency in write-mode remains limited by DuckDB’s architecture.)
-- **Extended Data Analysis Endpoints**: Implement additional analyses from the original Taxis-Vis paper (and beyond).
-- **Advanced Date Picker**: Incorporate hour- and minute-level constraints in the time range filtering.
-- **Cloud Hosting & Benchmarking**: Test performance with 100K, 1M, and 10M trip records in real-time environments.
-
-**Research-based Open Questions**
-
-- **Reusability**: Investigate how each component—frontends, backends, libraries—could form a broader ecosystem for
-  urban analytics, accessible to both technical and non-technical stakeholders.
-- **LLMs for Automation**: Explore how large language models could streamline the entire process—creating new Taxis Vis
-  instances for different cities, handling JSON config automatically, or giving step-by-step guidance for each setup.
-- **Community & Reusability**: Discuss with Juliana, Claudio, and Joao to understand the real-world value of a
-  dedicated, open-source “urban computing” library. Would it speed up future proof-of-concept builds inside NYU VIDA and
-  beyond? That's my belief and do not understand why is there yet not a toolkit for it!
-
-</details>
 
 ## 📖 **Further Reading**
 

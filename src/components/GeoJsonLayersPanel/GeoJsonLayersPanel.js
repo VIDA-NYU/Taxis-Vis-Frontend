@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
-import {GeoJSON} from "react-leaflet";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
 import "./GeoJsonLayersPanel.styles.css";
 
-const GeoJsonLayersPanel = ({layers, position = "top-right"}) => {
+const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
     const [visibility, setVisibility] = useState(
         layers.reduce((acc, layer) => {
             acc[layer.id] = true;
@@ -16,12 +15,59 @@ const GeoJsonLayersPanel = ({layers, position = "top-right"}) => {
     const [isMinimized, setIsMinimized] = useState(false);
 
     useEffect(() => {
-        const updatedVisibility = layers.reduce((acc, layer) => {
+        const updated = layers.reduce((acc, layer) => {
             acc[layer.id] = visibility[layer.id] ?? true;
             return acc;
         }, {});
-        setVisibility(updatedVisibility);
-    }, [layers]);
+        setVisibility(updated);
+    }, [layers]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (!map) return;
+        layers.forEach((layer) => {
+            if (!map.getSource(layer.id)) {
+                map.addSource(layer.id, {
+                    type: "geojson",
+                    data: layer.geojsonData,
+                });
+            } else {
+                map.getSource(layer.id).setData(layer.geojsonData);
+            }
+
+            const fillLayerId = `${layer.id}-fill`;
+            if (!map.getLayer(fillLayerId)) {
+                map.addLayer({
+                    id: fillLayerId,
+                    type: "fill",
+                    source: layer.id,
+                    layout: {visibility: visibility[layer.id] ? "visible" : "none"},
+                    paint: {
+                        "fill-color": layer.style?.color || "blue",
+                        "fill-opacity": layer.style?.opacity ?? 0.6,
+                    },
+                });
+            } else {
+                map.setLayoutProperty(fillLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
+            }
+
+            const outlineLayerId = `${layer.id}-outline`;
+            if (!map.getLayer(outlineLayerId)) {
+                map.addLayer({
+                    id: outlineLayerId,
+                    type: "line",
+                    source: layer.id,
+                    layout: {visibility: visibility[layer.id] ? "visible" : "none"},
+                    paint: {
+                        "line-color": layer.style?.color || "blue",
+                        "line-width": layer.style?.weight || 2,
+                        "line-opacity": layer.style?.opacity ?? 0.6,
+                    },
+                });
+            } else {
+                map.setLayoutProperty(outlineLayerId, "visibility", visibility[layer.id] ? "visible" : "none");
+            }
+        });
+    }, [layers, map, visibility]);
 
     const toggleVisibility = (id) => {
         setVisibility((prev) => ({...prev, [id]: !prev[id]}));
@@ -32,21 +78,10 @@ const GeoJsonLayersPanel = ({layers, position = "top-right"}) => {
     };
 
     return (
-        <div
-            className={`geo_json_layers-panel ${position} ${
-                isMinimized ? "minimized" : ""
-            }`}
-        >
-            <div
-                className={`geo_json_layers-header ${
-                    isMinimized ? "minimized" : ""
-                }`}
-            >
+        <div className={`geo_json_layers-panel ${position} ${isMinimized ? "minimized" : ""}`}>
+            <div className={`geo_json_layers-header ${isMinimized ? "minimized" : ""}`}>
                 <span>GeoJSON Layers</span>
-                <Tooltip
-                    title={isMinimized ? "Expand Legend" : "Minimize Legend"}
-                    arrow
-                >
+                <Tooltip title={isMinimized ? "Expand Legend" : "Minimize Legend"} arrow>
                     <IconButton
                         className="geo_json_layers-minimize-btn small-btn"
                         onClick={toggleMinimized}
@@ -61,15 +96,9 @@ const GeoJsonLayersPanel = ({layers, position = "top-right"}) => {
             {!isMinimized && (
                 <div className="geo_json_layers-list">
                     {layers.map((layer) => (
-                        <div
-                            key={layer.id}
-                            className="geo_json_layers-item"
-                            onClick={() => toggleVisibility(layer.id)}
-                        >
-                            <div
-                                className="geo_json_layers-icon"
-                                style={{backgroundColor: layer.style?.color || "#000"}}
-                            />
+                        <div key={layer.id} className="geo_json_layers-item" onClick={() => toggleVisibility(layer.id)}>
+                            <div className="geo_json_layers-icon"
+                                 style={{backgroundColor: layer.style?.color || "#000"}}/>
                             <span className="geo_json_layers-name">{layer.name}</span>
                             <input
                                 type="checkbox"
@@ -80,16 +109,6 @@ const GeoJsonLayersPanel = ({layers, position = "top-right"}) => {
                         </div>
                     ))}
                 </div>
-            )}
-
-            {layers.map((layer) =>
-                visibility[layer.id] && layer.geojsonData ? (
-                    <GeoJSON
-                        key={`${layer.id}-${JSON.stringify(layer.geojsonData).length}`}
-                        data={layer.geojsonData}
-                        style={layer.style || {color: "blue", weight: 2, opacity: 0.6}}
-                    />
-                ) : null
             )}
         </div>
     );
@@ -105,6 +124,7 @@ GeoJsonLayersPanel.propTypes = {
         })
     ).isRequired,
     position: PropTypes.oneOf(["top-right", "top-left", "bottom-right", "bottom-left"]),
+    map: PropTypes.object.isRequired,
 };
 
 export default GeoJsonLayersPanel;

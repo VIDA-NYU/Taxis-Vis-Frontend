@@ -1,10 +1,7 @@
 {
   "mapSettings": {
-    "tileLayer": "cartoLight",
-    "center": [
-      38.9072,
-      -77.0369
-    ],
+    "tileLayer": "mapbox://styles/mapbox/navigation-night-v1",
+    "center": "dc",
     "zoom": 11
   },
   "geoJsonLayers": [

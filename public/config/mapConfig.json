@@ -1,10 +1,7 @@
 {
   "mapSettings": {
-    "tileLayer": "cartoLight",
-    "center": [
-      40.7128,
-      -74.0060
-    ],
+    "tileLayer": "streets-v12-2D",
+    "center": "nyc",
     "zoom": 11
   },
   "geoJsonLayers": [
