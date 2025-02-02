@@ -2,7 +2,7 @@ __# DC Example: Importing GeoJSON and Creating DuckDB Database
 
 ![DC](./DC_cover.png)
 
-## ⏭️ **Setup Configuration (For Reproduction)**
+## ⏭️ Setup Configuration (For Reproduction)
 
 - **Node.js Version**: [![Node.js](https://img.shields.io/badge/Node.js-23.6.1-green)]
 - **React Version**: [![React](https://img.shields.io/badge/React-19.0.0-blue)]
@@ -15,7 +15,7 @@ The rest of the setup is detailed per the `package.json` and `pyproject.toml` fi
 - **RAM**: [![RAM](https://img.shields.io/badge/RAM-16GB-blue)]
 - **CPU Chip**: [![CPU](https://img.shields.io/badge/CPU-Apple%20M2%20Pro-blue)]
 
-## 📍 **Overview**
+## 📍 Overview
 
 This example demonstrates how to import Washington DC taxi trip data, convert the dataset, create a DuckDB database, and
 configure both the **Frontend** and **GeoSpatial Backend** for DC-specific data. Follow the steps below to replicate
@@ -24,16 +24,18 @@ this setup.
 > [!NOTE]
 > We assume that you have `node`, `react`, `python`, and `duckDB` installed on your local machine!
 
-## 🚀 **Steps to Import DC Taxi Data**
+## 🚀 Steps to Import DC Taxi Data
 
-### 1. **Download the DC Taxi Trips Dataset
-** ![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
+### 1. Download the DC Taxi Trips Dataset
+
+![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
 
 Download the CSV dataset of taxi trips in Washington DC from [this link](https://dcgov.app.box.com/v/taxi-trips-2019).
 For this example, we will use the `taxi_2019_01.txt` file for January 2019.
 
-### 2. **Rename the File Extension
-** ![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
+### 2. Rename the File Extension
+
+![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
 
 Move and rename the `.txt` file to `.csv`:
 
@@ -41,8 +43,9 @@ Move and rename the `.txt` file to `.csv`:
 mv taxi_2019_01.txt taxi_2019_01.csv
 ```
 
-### 3. **Convert Pipe-Separated to Comma-Separated CSV
-** ![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
+### 3. Convert Pipe-Separated to Comma-Separated CSV
+
+![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
 
 Use the following Python script to convert the pipe-separated `.csv` file to a comma-separated `.csv`. This is necessary
 because DuckDB expects comma-separated values for proper parsing.
@@ -79,8 +82,9 @@ convert_pipe_to_comma(input_file, output_file)
 > DuckDB efficiently handles comma-separated values. Converting ensures that all data is correctly parsed and stored,
 > enabling seamless integration with the backend services.
 
-### 4. **Download DC Neighborhoods GeoJSON
-** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green) && ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 4. Download DC Neighborhoods GeoJSON
+
+![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green) && ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
 Download the GeoJSON file for DC neighborhoods
 from [this repository](https://github.com/benbalter/dc-maps/blob/master/maps/neighborhood-clusters.geojson).
@@ -104,7 +108,7 @@ mv neighborhood-clusters.geojson /path/to/taxis-vis-frontend/public/geojson/DC/n
 mv neighborhood-clusters.geojson /path/to/taxis-vis-geospatial-backend/public/geojson/DC/neighborhoods.geojson
 ```
 
-### 5. **Configure the Frontend `mapConfig.json`** ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 5. Configure the Frontend `mapConfig.json` ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
 The `mapConfig.json` file defines the map's appearance and layers. You can either specify a **custom Mapbox style URL**
 or select from **predefined styles** available in [`src/utils/tiles_layers.json`](../src/utils/tiles_layers.json).  
@@ -159,7 +163,7 @@ Similarly, the map center can be defined manually or by using a predefined city 
 
 ---
 
-### 4. **Configure the Frontend `mapConfig.json`** (NYC) ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 4. Configure the Frontend `mapConfig.json` (NYC) ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
 The `mapConfig.json` file defines the default map settings and layers.  
 Instead of hardcoding coordinates and styles, you can leverage predefined **tile layers** from [
@@ -230,7 +234,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 > - The **tile layer** can be a custom Mapbox style URL or a predefined key from `tiles_layers.json`.
 > - Multiple layers can be included under `geoJsonLayers`, and the UI allows toggling them on/off.
 
-### 6. **Create the DuckDB Database** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 6. Create the DuckDB Database ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 Follow the instructions in
 the [GeoSpatial Computation Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend#installation--setup)
@@ -306,8 +310,9 @@ CREATE INDEX idx_dropoff_time ON trips (tpep_dropoff_datetime);
 > **Tip**: Ensure that the column names in the `read_csv` function match exactly with your CSV headers for seamless data
 > import.
 
-### 7. **Configure Backend `config.json` and `dataset.json`
-** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 7. Configure Backend `config.json` and `dataset.json`
+
+![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 Modify the backend configuration files to point to the DC DuckDB database and GeoJSON.
 
@@ -396,8 +401,9 @@ Modify the backend configuration files to point to the DC DuckDB database and Ge
 `data_analysis_backend_required_columns`. This ensures seamless data flow between the frontend and the data analysis
 > backend.
 
-### 8. **Finalise and Restart Services
-** ![Frontend](https://img.shields.io/badge/Frontend-React-blue) ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 8. Finalise and Restart Services
+
+![Frontend](https://img.shields.io/badge/Frontend-React-blue) ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 After completing the above configurations:
 

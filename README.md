@@ -92,11 +92,8 @@ The **Frontend** relies on `public/config/mapConfig.json` to configure:
 ```json
 {
   "mapSettings": {
-    "tileLayer": "cartoLight",
-    "center": [
-      40.7128,
-      -74.0060
-    ],
+    "tileLayer": "outdoors-v12-2D",
+    "center": "nyc",
     "zoom": 11
   },
   "geoJsonLayers": [
@@ -204,8 +201,8 @@ for their respective configurations.
    ```json
    {
      "mapSettings": {
-       "tileLayer": "cartoLight",
-       "center": [51.5074, -0.1278],
+       "tileLayer": "outdoors-v12-2D",
+       "center": "london",
        "zoom": 11
      },
      "geoJsonLayers": [

@@ -2,7 +2,7 @@
 
 ![NYC](./NYC_cover.png)
 
-## ⏭️ **Setup Configuration (For Reproduction)**
+## ⏭️ Setup Configuration (For Reproduction)
 
 - **Node.js Version**: [![Node.js](https://img.shields.io/badge/Node.js-23.6.1-green)]
 - **React Version**: [![React](https://img.shields.io/badge/React-19.0.0-blue)]
@@ -14,7 +14,7 @@
 
 The rest of the setup is detailed per the `package.json` and `pyproject.toml` files in the respective directories.
 
-## 📍 **Overview**
+## 📍 Overview
 
 This example demonstrates how to import **New York City** taxi trip data, (optionally) sample rows, create a DuckDB
 database, and configure both the **Frontend** and **GeoSpatial Backend** for NYC-specific data. Follow the steps below
@@ -23,10 +23,11 @@ to replicate this setup.
 > [!NOTE]
 > We assume that you have `node`, `react`, `python`, and `duckDB` installed on your local machine!
 
-## 🚀 **Steps to Import NYC Taxi Data**
+## 🚀 Steps to Import NYC Taxi Data
 
-### 1. **Download the NYC Taxi Trips Dataset
-** ![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
+### 1. Download the NYC Taxi Trips Dataset
+
+![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
 
 Visit
 the [NYC Open Data Portal (2015 Yellow Taxi Trip Data)](https://data.cityofnewyork.us/Transportation/2015-Yellow-Taxi-Trip-Data/2yzn-sicd/data).
@@ -41,8 +42,9 @@ the [NYC Open Data Portal (2015 Yellow Taxi Trip Data)](https://data.cityofnewyo
 > we have not. Simply zoom back in NYC.
 >
 
-### 2. **(Optional) Extract a Subset of Rows
-** ![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
+### 2. (Optional) Extract a Subset of Rows
+
+![On your own local machine](https://img.shields.io/badge/On%20your%20own%20local%20machine-Setup-blue)
 
 If you want to avoid huge local queries (the dataset can be very large), you can sample out, e.g., 100K or 1M rows:
 
@@ -83,15 +85,15 @@ uv run python extract_rows_pandas.py taxisbig.csv taxisvis1M.csv 1000000
 
 *(This extracts 1 million rows from `taxisbig.csv` to `taxisvis1M.csv`.)*
 
-### 3. **Download NYC GeoJSON Layers** ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 3. Download NYC GeoJSON Layers ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
 We provide three layers you can store in `public/geojson/NYC/`:
 
-1. **Boroughs
-   **: [NYC Boroughs GeoJSON](https://github.com/codeforgermany/click_that_hood/blob/main/public/data/new-york-city-boroughs.geojson)
-2. **Neighborhoods
-   **: [NYC Neighborhoods GeoJSON](https://data.dathere.com/dataset/nyc-neighborhoods/resource/d6db2e12-fc58-4e41-bc58-5bdfb5078131)
-3. **Parks**: [NYC Parks Properties](https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data)
+1. Boroughs
+   : [NYC Boroughs GeoJSON](https://github.com/codeforgermany/click_that_hood/blob/main/public/data/new-york-city-boroughs.geojson)
+   2. Neighborhoods
+   : [NYC Neighborhoods GeoJSON](https://data.dathere.com/dataset/nyc-neighborhoods/resource/d6db2e12-fc58-4e41-bc58-5bdfb5078131)
+   3. Parks: [NYC Parks Properties](https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve/about_data)
 
 Download and save them as follows:
 
@@ -102,13 +104,14 @@ curl -o public/geojson/NYC/neighborhoods.geojson <Neighborhoods_Url>
 curl -o public/geojson/NYC/parks.geojson <Parks_Url>
 ```
 
-### 3.BIS **Download only the Neighborhoods GeoJson for the Node.JS Backend
-** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 3.BIS Download only the Neighborhoods GeoJson for the Node.JS Backend
+
+![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 We provide the Neighborhoods GeoJSON layer you can store in `public/geojson/NYC/`:
 
-1. **Neighborhoods
-   **: [NYC Neighborhoods GeoJSON](https://data.dathere.com/dataset/nyc-neighborhoods/resource/d6db2e12-fc58-4e41-bc58-5bdfb5078131)
+1. Neighborhoods
+   : [NYC Neighborhoods GeoJSON](https://data.dathere.com/dataset/nyc-neighborhoods/resource/d6db2e12-fc58-4e41-bc58-5bdfb5078131)
 
 Download and save it as follows:
 
@@ -118,7 +121,7 @@ mkdir -p public/geojson/NYC
 curl -o public/geojson/NYC/neighborhoods.geojson <Neighborhoods_Url>
 ```
 
-### 4. **Configure the Frontend `mapConfig.json`** (NYC) ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 4. Configure the Frontend `mapConfig.json` (NYC) ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
 The `mapConfig.json` file defines the default map settings and layers.  
 Instead of hardcoding coordinates and styles, you can leverage predefined **tile layers** from [
@@ -188,7 +191,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 > - The **tile layer** can be a custom Mapbox style URL or a predefined key from `tiles_layers.json`.
 > - Multiple layers can be included under `geoJsonLayers`, and the UI allows toggling them on/off.
 
-### 5. **Create the DuckDB Database** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 5. Create the DuckDB Database ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 Follow the instructions in
 the [GeoSpatial Computation Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend#installation--setup)
@@ -254,8 +257,9 @@ CREATE INDEX idx_dropoff_time ON trips (tpep_dropoff_datetime);
 > [!NOTE]
 > **Tip**: If your CSV includes additional columns or uses different naming, update them in `columns={ ... }`.
 
-### 6. **Configure Backend `config.json` and `dataset.json`
-** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 6. Configure Backend `config.json` and `dataset.json`
+
+![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 In your Node.js geospatial backend, set:
 
@@ -333,8 +337,9 @@ In your Node.js geospatial backend, set:
 > Also note that `data_analysis_backend_required_columns` must not be removed if you plan to run the Data Analysis Backend
 > for advanced charts.
 
-### 7. **Finalise and Restart
-** ![Frontend](https://img.shields.io/badge/Frontend-React-blue) ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
+### 7. Finalise and Restart
+
+![Frontend](https://img.shields.io/badge/Frontend-React-blue) ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 1. **Restart the Node.js Geospatial Backend**:
    ```bash
