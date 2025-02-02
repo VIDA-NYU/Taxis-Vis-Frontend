@@ -2,7 +2,13 @@ import {API_URLS} from "../../config/apiUrls";
 
 export const fetchTrips = async (queries, limit = 1000000) => {
     if (!queries || queries.length === 0) {
-        return {markers: [], heatmapData: [], trips: []};
+        return {
+            markers: [],
+            pickupHeatmapData: [],
+            dropoffHeatmapData: [],
+            trips: [],
+            bounds: [],
+        };
     }
 
     try {
@@ -19,7 +25,8 @@ export const fetchTrips = async (queries, limit = 1000000) => {
         const data = await response.json();
 
         const markers = [];
-        const heatmapData = [];
+        const pickupHeatmapData = [];
+        const dropoffHeatmapData = [];
         const bounds = [];
 
         data.forEach((doc) => {
@@ -27,19 +34,25 @@ export const fetchTrips = async (queries, limit = 1000000) => {
                 console.warn("Missing coordinates in document:", doc);
                 return;
             }
-            const [pickupLng, pickupLat] = doc?.pickup?.coordinates;
-            const [dropoffLng, dropoffLat] = doc?.dropoff?.coordinates;
+            const [pickupLng, pickupLat] = doc.pickup.coordinates;
+            const [dropoffLng, dropoffLat] = doc.dropoff.coordinates;
 
-            markers.push({position: [pickupLat, pickupLng], color: "blue"});
-            markers.push({position: [dropoffLat, dropoffLng], color: "orange"});
+            markers.push({position: [pickupLat, pickupLng], type: "pickup"});
+            markers.push({position: [dropoffLat, dropoffLng], type: "dropoff"});
 
-            heatmapData.push([pickupLat, pickupLng]);
-            heatmapData.push([dropoffLat, dropoffLng]);
+            pickupHeatmapData.push([pickupLat, pickupLng]);
+            dropoffHeatmapData.push([dropoffLat, dropoffLng]);
 
             bounds.push([pickupLat, pickupLng], [dropoffLat, dropoffLng]);
         });
 
-        return {markers, heatmapData, trips: data, bounds};
+        return {
+            markers,
+            pickupHeatmapData,
+            dropoffHeatmapData,
+            trips: data,
+            bounds,
+        };
     } catch (error) {
         console.error("Fetch error:", error);
         throw error;
