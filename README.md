@@ -28,25 +28,25 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 
 > [!IMPORTANT]
 > ### **Latest News**
+> - **🚀 Taxis Vis Features Videos Available!**: We have added a series of **feature demonstration videos** to the
+    repository.These videos showcase the platform's capabilities, including **GeoJSON layer management, Spatial
+    Selections, Query Handling, and Multi-City Exploration**. You can find them in the [FEATURES.md](./FEATURES.md) file
+    of this
+    repository (root).
 > - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have finally migrated from **Leaflet** to **Mapbox GL JS** for
     enhanced map performance, interactivity, and styling options.  
     While Mapbox now requires an API access token, it remains largely **free** for projects like **Taxis Vis**, where
     the expected usage is well within the **50,000 free map loads per month**.  
     We do not utilise any other premium Mapbox services beyond tile serving, making this transition seamless for
-    users.  
-    Make sure to configure your `.env` file with a valid **Mapbox API token** (see the setup instructions below).
+    users. Make sure to configure your `.env` file with a valid **Mapbox API token** (see the setup instructions below).
 > - **🎉 DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis
-    Vis.  
-    > You can find these in the `examples/` directory of this repository.
+    Vis. You can find these in the `examples/` directory of this repository.
 > - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest —
-    provided  
-    > you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to
-    accommodate  
-    > various schemas and polygon data with small config changes.
+    provided you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to
+    accommodate various schemas and polygon data with small config changes.
 > - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like  
-    React, Mapbox GL JS, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions,
-    such  
-    as specialized or custom databases.
+    React, Leaflet, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions,
+    such as specialised or custom databases.
 
 ## 🚀 **Overview**
 
@@ -284,6 +284,7 @@ Taxis Vis for a new city or wish to see how we handle data conversion, DuckDB cr
 
 - [GeoSpatial Node.js Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
 - [Data Analysis Django Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
+- [Taxis Vis Features Videos](./FEATURES.md)
 - [The Original Paper (IEEE)](https://ieeexplore.ieee.org/abstract/document/6634127/)
 
 ---
