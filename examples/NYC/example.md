@@ -118,18 +118,19 @@ mkdir -p public/geojson/NYC
 curl -o public/geojson/NYC/neighborhoods.geojson <Neighborhoods_Url>
 ```
 
-### 4. **Configure the Frontend `mapConfig.json`** ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
+### 4. **Configure the Frontend `mapConfig.json`** (NYC) ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
-Below is an example `mapConfig.json` referencing the three layers:
+The `mapConfig.json` file defines the default map settings and layers.  
+Instead of hardcoding coordinates and styles, you can leverage predefined **tile layers** from [
+`src/utils/tiles_layers.json`](../src/utils/tiles_layers.json) and city centers from [
+`src/utils/cities_centers.json`](../src/utils/cities_centers.json).
 
+#### Example Using Predefined Tile Layer and City Center:
 ```json
 {
   "mapSettings": {
-    "tileLayer": "cartoLight",
-    "center": [
-      40.7128,
-      -74.0060
-    ],
+     "tileLayer": "streets-v12-2D",
+     "center": "nyc",
     "zoom": 11
   },
   "geoJsonLayers": [
@@ -166,6 +167,26 @@ Below is an example `mapConfig.json` referencing the three layers:
   ]
 }
 ```
+
+#### Example Using a Custom Mapbox Style and Explicit Coordinates:
+
+```json
+{
+   "mapSettings": {
+      "tileLayer": "mapbox://styles/your-custom-style-url",
+      "center": [
+         40.7128,
+         -74.0060
+      ],
+      "zoom": 11
+   }
+}
+```
+
+> [!NOTE]
+> - If `"center": "nyc"` is set, the system automatically retrieves NYC’s coordinates from `cities_centers.json`.
+> - The **tile layer** can be a custom Mapbox style URL or a predefined key from `tiles_layers.json`.
+> - Multiple layers can be included under `geoJsonLayers`, and the UI allows toggling them on/off.
 
 ### 5. **Create the DuckDB Database** ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
