@@ -134,6 +134,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
   "mapSettings": {
      "tileLayer": "streets-v12-2D",
      "center": "nyc",
+     "threeDEnabled": false,
     "zoom": 11
   },
   "geoJsonLayers": [
@@ -181,6 +182,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
          40.7128,
          -74.0060
       ],
+      "threeDEnabled": false,
       "zoom": 11
    }
 }

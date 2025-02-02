@@ -94,6 +94,7 @@ The **Frontend** relies on `public/config/mapConfig.json` to configure:
   "mapSettings": {
     "tileLayer": "outdoors-v12-2D",
     "center": "nyc",
+    "threeDEnabled": false,
     "zoom": 11
   },
   "geoJsonLayers": [
@@ -111,11 +112,14 @@ The **Frontend** relies on `public/config/mapConfig.json` to configure:
 }
 ```
 
-- **`mapSettings`**: Contains your default map center & zoom.
+- **`mapSettings`**: Contains your default map center, zoom and threeD settings.
 - **`geoJsonLayers`**: Each layer has an `id`, a `name`, a `url` path to the `.geojson` file, and an optional `style`.
 
 > [!NOTE]
-> You can serve multiple layers by adding them to this array. The `UI` can toggle them `on/off`.
+> - You can serve multiple **geoJSON layers** by adding them to the `"geoJsonLayers"` array.
+> - The **UI** can toggle layers **on/off** dynamically.
+> - **To enable 3D buildings**, add `"threeDEnabled": true` inside `"mapSettings"`.
+> - The 3D layer automatically overlays the city’s **vector buildings layer** when zoomed in.
 
 ### **B. Adding a New City or Additional Layers**
 
@@ -203,6 +207,7 @@ for their respective configurations.
      "mapSettings": {
        "tileLayer": "outdoors-v12-2D",
        "center": "london",
+       "threeDEnabled": false,
        "zoom": 11
      },
      "geoJsonLayers": [
