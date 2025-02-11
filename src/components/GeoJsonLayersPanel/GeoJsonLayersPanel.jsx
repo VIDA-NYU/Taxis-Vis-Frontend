@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {add3DBuildingsLayer, toggle3DBuildingsVisibility} from "./GeoJsonLayersPanel.three_d_buildings";
+import {add3DBuildingsLayer, toggle3DBuildingsVisibility} from "./GeoJsonLayersPanel.utils";
 import "./GeoJsonLayersPanel.styles.css";
 
 const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
@@ -65,7 +65,7 @@ const GeoJsonLayersPanel = ({layers, position = "top-right", map}) => {
                         paint: {
                             "line-color": layer.style?.color || "blue",
                             "line-width": layer.style?.weight || 2,
-                            "line-opacity": layer.style?.opacity ?? 0.6,
+                            "line-opacity": layer.style?.opacity || 0.6,
                         },
                     });
                 } else {
@@ -137,7 +137,7 @@ GeoJsonLayersPanel.propTypes = {
         })
     ).isRequired,
     position: PropTypes.oneOf(["top-right", "top-left", "bottom-right", "bottom-left"]),
-    map: PropTypes.object.isRequired,
+    map: PropTypes.object,
 };
 
 export default GeoJsonLayersPanel;

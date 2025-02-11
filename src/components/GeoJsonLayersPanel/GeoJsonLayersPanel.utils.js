@@ -2,7 +2,7 @@ export const add3DBuildingsLayer = (map) => {
     if (!map) return;
 
     const insert3DBuildingsLayer = () => {
-        if (map.getLayer("add-3d-buildings")) {
+        if (map.getLayer("3d-buildings-layer")) {
             return;
         }
 
@@ -11,7 +11,7 @@ export const add3DBuildingsLayer = (map) => {
 
         map.addLayer(
             {
-                id: "add-3d-buildings",
+                id: "3d-buildings-layer",
                 source: "composite",
                 "source-layer": "building",
                 filter: ["==", "extrude", "true"],
@@ -52,12 +52,12 @@ export const add3DBuildingsLayer = (map) => {
 };
 
 export const toggle3DBuildingsVisibility = (map) => {
-    if (!map.getLayer("add-3d-buildings")) {
+    if (!map.getLayer("3d-buildings-layer")) {
         console.warn("3D Buildings layer is not yet loaded, cannot toggle visibility.");
         return;
     }
-    const currentVisibility = map.getLayoutProperty("add-3d-buildings", "visibility");
+    const currentVisibility = map.getLayoutProperty("3d-buildings-layer", "visibility");
     const newVisibility = currentVisibility === "visible" ? "none" : "visible";
-    map.setLayoutProperty("add-3d-buildings", "visibility", newVisibility);
+    map.setLayoutProperty("3d-buildings-layer", "visibility", newVisibility);
     return newVisibility === "visible";
 };
