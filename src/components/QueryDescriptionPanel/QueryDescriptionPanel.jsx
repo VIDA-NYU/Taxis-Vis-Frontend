@@ -4,14 +4,23 @@ import Tooltip from "@mui/material/Tooltip";
 import "./QueryDescriptionPanel.styles.css";
 import {fetchDescriptions} from "./QueryDescriptionPanel.services";
 
-const QueryDescriptionPanel = ({queries, limit = 100000, timeRange}) => {
+const QueryDescriptionPanel = ({queries, timeRange, geoJsonLayers, config}) => {
     const [descriptions, setDescriptions] = useState([]);
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
+        if (!queries || !queries.length) {
+            if (descriptions.length > 0) setDescriptions([]);
+            return;
+        }
+
         const fetchData = async () => {
-            const data = await fetchDescriptions(queries, limit);
-            setDescriptions(data);
+            try {
+                const data = await fetchDescriptions(queries, geoJsonLayers, config);
+                setDescriptions(data);
+            } catch (error) {
+                console.error("Failed to fetch descriptions from DuckDB:", error);
+            }
         };
 
         fetchData();
@@ -20,7 +29,7 @@ const QueryDescriptionPanel = ({queries, limit = 100000, timeRange}) => {
     const formatDateRange = (range) => {
         if (!range.start || !range.end) return null;
 
-        const options = {year: 'numeric', month: 'short', day: 'numeric'};
+        const options = {year: "numeric", month: "short", day: "numeric"};
         const startDate = new Date(range.start).toLocaleDateString(undefined, options);
         const endDate = new Date(range.end).toLocaleDateString(undefined, options);
 
@@ -100,7 +109,6 @@ const QueryDescriptionPanel = ({queries, limit = 100000, timeRange}) => {
 
 QueryDescriptionPanel.propTypes = {
     queries: PropTypes.arrayOf(PropTypes.object).isRequired,
-    limit: PropTypes.number,
     timeRange: PropTypes.shape({
         start: PropTypes.instanceOf(Date),
         end: PropTypes.instanceOf(Date),
