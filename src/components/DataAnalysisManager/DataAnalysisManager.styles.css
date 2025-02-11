@@ -1,4 +1,4 @@
-.analysis_panel-hover-container {
+.analysis_manager-hover-container {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -7,7 +7,7 @@
     z-index: 4900;
 }
 
-.analysis_panel-panel {
+.analysis_manager-panel {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -16,13 +16,13 @@
     transition: background 1s ease, padding 1s ease;
 }
 
-.analysis_panel-panel.expanded {
+.analysis_manager-panel.expanded {
     border-radius: 24px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
 }
 
-.analysis_panel-card {
+.analysis_manager-card {
     position: absolute;
     left: 0;
     right: 0;
@@ -37,31 +37,31 @@
     cursor: pointer;
 }
 
-.analysis_panel-card:hover {
+.analysis_manager-card:hover {
     transform: scale(1.05);
     background: linear-gradient(145deg, #e0e0e0, #ffffff);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.analysis_panel-card.expanded {
+.analysis_manager-card.expanded {
     opacity: 1;
     transform: translateY(var(--expanded-offset)) scale(1.03);
     z-index: 102;
 }
 
-.analysis_panel-card.expanded:hover {
+.analysis_manager-card.expanded:hover {
     transform: translateY(var(--expanded-offset)) scale(1.08);
     background: linear-gradient(145deg, #dcdcdc, #ffffff);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
-.analysis_panel-content {
+.analysis_manager-content {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.analysis_panel-icon {
+.analysis_manager-icon {
     width: 24px;
     height: 24px;
     background-color: #007aff;
@@ -73,18 +73,18 @@
     font-size: 16px;
 }
 
-.analysis_panel-text {
+.analysis_manager-text {
     flex-grow: 1;
 }
 
-.analysis_panel-title {
+.analysis_manager-title {
     font-size: 0.85rem;
     font-weight: 500;
     color: black;
 }
 
 
-.analysis_panel-card.disabled {
+.analysis_manager-card.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }

@@ -1,4 +1,25 @@
-import {API_URLS} from "../../config/apiUrls";
+import {API_URLS} from "../../utils/apiUrls";
+
+export const fetchConfig = async () => {
+    try {
+        const response = await fetch("/config/data_analysis_config/config.json");
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (!data || Object.keys(data).length === 0) {
+            throw new Error("Empty config received");
+        }
+
+        return data;
+    } catch (error) {
+        console.error("Error fetching dataset configuration:", error);
+        return null;
+    }
+};
 
 const flattenObject = (obj, parent = '', res = {}) => {
     for (let key in obj) {
