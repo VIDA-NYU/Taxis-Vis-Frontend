@@ -1,13 +1,17 @@
 import {useState, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import mapboxgl from "mapbox-gl";
-import {fetchTrips} from "./TaxisVisGeoSpatialManager.services";
 import {
     createDropoffMarkerEl,
     createPickupMarkerEl,
     dropoffHeatmapPaint,
     pickupHeatmapPaint
 } from "./TaxisVisGeoSpatialManager.utils";
+
+import {useDuckDb, runQuery} from "duckdb-wasm-kit";
+
+import {fetchData} from "./TaxisVisGeoSpatialManager.services";
+import {useAppConfig} from "../../providers/DuckDB/DuckDBProvider";
 
 const TaxisVisGeoSpatialManager = ({
                                        queries,
@@ -19,12 +23,43 @@ const TaxisVisGeoSpatialManager = ({
     const [pickupHeatmapData, setPickupHeatmapData] = useState([]);
     const [dropoffHeatmapData, setDropoffHeatmapData] = useState([]);
     const markersRef = useRef([]);
+    const config = useAppConfig();
 
     const pickupHeatLayerId = "pickup-heatmap-layer";
     const dropoffHeatLayerId = "dropoff-heatmap-layer";
     const pickupSourceId = "pickup-heatmap-source";
     const dropoffSourceId = "dropoff-heatmap-source";
     const THRESHOLD = 1000;
+
+    const {db, loading, error} = useDuckDb();
+
+    useEffect(() => {
+        if (db) {
+            (async () => {
+                await runQuery(db, "INSTALL spatial; LOAD spatial;");
+            })();
+        }
+    }, [db]);
+
+    useEffect(() => {
+        if (!db || !queries || queries.length === 0 || loading || error) {
+            clearMarkers();
+            removeAllHeatmaps();
+            return;
+        }
+
+        fetchData(
+            db,
+            queries,
+            (markersData) => setMarkersData(markersData),
+            (pickupHeatmapData) => setPickupHeatmapData(pickupHeatmapData),
+            (dropoffHeatmapData) => setDropoffHeatmapData(dropoffHeatmapData),
+            (filteredTrips) => onFilteredTrips(filteredTrips),
+            config,
+            limit,
+        );
+    }, [db, queries, limit]);
+
 
     const addMarkers = (markers) => {
         clearMarkers();
@@ -118,38 +153,6 @@ const TaxisVisGeoSpatialManager = ({
         clearHeatMapLayer(pickupHeatLayerId, pickupSourceId);
         clearHeatMapLayer(dropoffHeatLayerId, dropoffSourceId);
     };
-
-    useEffect(() => {
-        if (!queries || queries.length === 0) {
-            clearMarkers();
-            removeAllHeatmaps();
-            return;
-        }
-        ;
-
-        const fetchData = async () => {
-            try {
-                const {
-                    markers,
-                    pickupHeatmapData,
-                    dropoffHeatmapData,
-                    trips,
-                    bounds,
-                } = await fetchTrips(queries, limit);
-
-                setMarkersData(markers);
-
-                setPickupHeatmapData(pickupHeatmapData);
-                setDropoffHeatmapData(dropoffHeatmapData);
-
-                onFilteredTrips(trips);
-            } catch (error) {
-                console.error("Error fetching trips:", error);
-            }
-        };
-
-        fetchData();
-    }, [queries, limit, onFilteredTrips, map]);
 
     useEffect(() => {
         if (!map) return;

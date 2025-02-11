@@ -1,60 +1,83 @@
-import {API_URLS} from "../../config/apiUrls";
+import {buildDateFilter, constructQuery, transformQueryResults} from "./TaxisVisGeoSpatialManager.utils";
+import * as turf from "@turf/turf";
+import {runQuery} from "duckdb-wasm-kit";
 
-export const fetchTrips = async (queries, limit = 1000000) => {
-    if (!queries || queries.length === 0) {
-        return {
-            markers: [],
-            pickupHeatmapData: [],
-            dropoffHeatmapData: [],
-            trips: [],
-            bounds: [],
-        };
-    }
-
+export const fetchData = async (
+    db,
+    queries,
+    onSetMarkersData,
+    onSetPickupHeatmapData,
+    onSetDropoffHeatmapData,
+    onFilteredTrips,
+    config,
+    limit = 1000,
+) => {
     try {
-        const response = await fetch(API_URLS.TRIPS.FETCH, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({queries, limit}),
-        });
+        let allTrips = [];
+        const markersForAll = [];
+        const pickupHeatForAll = [];
+        const dropoffHeatForAll = [];
 
-        if (!response.ok) {
-            throw new Error(`Server responded with status ${response.status}`);
-        }
+        const queryPromises = queries.map(async (queryObj) => {
+            const {
+                fromDate,
+                toDate,
+                type,
+                region,
+                pickupRegion,
+                dropoffRegion,
+                lineCoordinates,
+                buffer = 500
+            } = queryObj;
 
-        const data = await response.json();
+            const dateFilter = buildDateFilter(fromDate, toDate, config);
+            const regionFilters = {};
 
-        const markers = [];
-        const pickupHeatmapData = [];
-        const dropoffHeatmapData = [];
-        const bounds = [];
-
-        data.forEach((doc) => {
-            if (!doc?.pickup?.coordinates || !doc?.dropoff?.coordinates) {
-                console.warn("Missing coordinates in document:", doc);
-                return;
+            if (region) {
+                regionFilters.region = region;
             }
-            const [pickupLng, pickupLat] = doc.pickup.coordinates;
-            const [dropoffLng, dropoffLat] = doc.dropoff.coordinates;
 
-            markers.push({position: [pickupLat, pickupLng], type: "pickup"});
-            markers.push({position: [dropoffLat, dropoffLng], type: "dropoff"});
+            if (pickupRegion && dropoffRegion) {
+                regionFilters.pickupRegion = pickupRegion;
+                regionFilters.dropoffRegion = dropoffRegion;
+            }
 
-            pickupHeatmapData.push([pickupLat, pickupLng]);
-            dropoffHeatmapData.push([dropoffLat, dropoffLng]);
+            if (lineCoordinates) {
+                regionFilters.bufferedLine = turf.buffer(
+                    turf.lineString(lineCoordinates),
+                    buffer,
+                    {units: 'meters'}
+                );
+            }
 
-            bounds.push([pickupLat, pickupLng], [dropoffLat, dropoffLng]);
+            const sql = constructQuery(type, regionFilters, dateFilter, limit, config);
+            const arrowResult = await runQuery(db, sql);
+            const rowsAsObjects = arrowResult.toArray().map(row => row.toJSON());
+            const trips = transformQueryResults(rowsAsObjects, config);
+
+            trips.forEach((doc) => {
+                if (!doc?.pickup?.coordinates || !doc?.dropoff?.coordinates) return;
+                const [pickupLng, pickupLat] = doc.pickup.coordinates;
+                const [dropoffLng, dropoffLat] = doc.dropoff.coordinates;
+                markersForAll.push({position: [pickupLat, pickupLng], type: "pickup"});
+                markersForAll.push({position: [dropoffLat, dropoffLng], type: "dropoff"});
+                pickupHeatForAll.push([pickupLat, pickupLng]);
+                dropoffHeatForAll.push([dropoffLat, dropoffLng]);
+            });
+
+            return trips;
         });
 
-        return {
-            markers,
-            pickupHeatmapData,
-            dropoffHeatmapData,
-            trips: data,
-            bounds,
-        };
-    } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        const tripsArray = await Promise.all(queryPromises);
+        tripsArray.forEach(trips => {
+            allTrips = allTrips.concat(trips);
+        });
+
+        onSetMarkersData(markersForAll);
+        onSetPickupHeatmapData(pickupHeatForAll);
+        onSetDropoffHeatmapData(dropoffHeatForAll);
+        onFilteredTrips(allTrips);
+    } catch (err) {
+        console.error("DuckDB query error:", err);
     }
 };

@@ -1,3 +1,5 @@
+import {maybeQuoteIdentifier} from "../../utils/helper";
+
 function createPickupMarkerEl() {
     const circle = document.createElement("div");
     circle.style.boxSizing = "border-box";
@@ -59,4 +61,140 @@ const dropoffHeatmapPaint = {
     ],
 };
 
-export {createPickupMarkerEl, createDropoffMarkerEl, pickupHeatmapPaint, dropoffHeatmapPaint};
+const transformQueryResults = (rows, config) => {
+    const reverseMapping = config && config.logical_db_to_required_columns
+        ? Object.fromEntries(
+            Object.entries(config.logical_db_to_required_columns).map(
+                ([logicalKey, requiredColumn]) => [requiredColumn, logicalKey]
+            )
+        )
+        : {};
+
+    return rows.map((row) => {
+        const transformedRow = {};
+        for (const [dbColumnName, value] of Object.entries(row)) {
+            const key = reverseMapping[dbColumnName] || dbColumnName;
+
+            if (key === "pickup" || key === "dropoff") {
+                try {
+                    transformedRow[key] =
+                        typeof value === "string" && value.startsWith("{")
+                            ? JSON.parse(value)
+                            : value;
+                } catch (error) {
+                    console.error(`Invalid JSON in ${key}:`, value);
+                    transformedRow[key] = null;
+                }
+            } else if (typeof value === "bigint") {
+                transformedRow[key] = value.toString();
+            } else if (value?.constructor?.name === "DuckDBTimestampValue") {
+                transformedRow[key] = new Date(Number(value.micros / 1000n)).toISOString();
+            } else {
+                transformedRow[key] = value;
+            }
+        }
+        return transformedRow;
+    });
+};
+
+const buildDateFilter = (fromDate, toDate, config) => {
+    let filter = "";
+    if (fromDate)
+        filter += `AND ${config.datetimeColumns.pickup} >= '${fromDate}' `;
+    if (toDate)
+        filter += `AND ${config.datetimeColumns.dropoff} <= '${toDate}' `;
+    return filter;
+};
+
+const constructQuery = (type, regionFilters, dateFilter, limit, config) => {
+    const quotedTable = maybeQuoteIdentifier(config.tableName);
+    const pickupCol = config.locationColumns.pickup;   // e.g. "pickup"
+    const dropoffCol = config.locationColumns.dropoff; // e.g. "dropoff"
+
+    const selectClause = `
+        SELECT *                                                  EXCLUDE (${pickupCol}, ${dropoffCol}), ST_AsGeoJSON(ST_GeomFromGeoJSON(${pickupCol})) AS ${pickupCol},
+               ST_AsGeoJSON(ST_GeomFromGeoJSON(${dropoffCol})) AS ${dropoffCol}
+        FROM ${quotedTable}
+    `;
+
+    const region = JSON.stringify(regionFilters.region);
+    const pickupRegion = JSON.stringify(regionFilters.pickupRegion);
+    const dropoffRegion = JSON.stringify(regionFilters.dropoffRegion);
+    const bufferedLine = regionFilters.bufferedLine
+        ? JSON.stringify(regionFilters.bufferedLine.geometry)
+        : null;
+
+    switch (type) {
+        case "pickup":
+            return `
+        ${selectClause}
+        WHERE ST_Within(
+          ST_GeomFromGeoJSON("${pickupCol}"),
+          ST_GeomFromGeoJSON('${region}')
+        )
+        ${dateFilter}
+        LIMIT ${limit}
+      `;
+
+        case "dropoff":
+            return `
+        ${selectClause}
+        WHERE ST_Within(
+          ST_GeomFromGeoJSON("${dropoffCol}"),
+          ST_GeomFromGeoJSON('${region}')
+        )
+        ${dateFilter}
+        LIMIT ${limit}
+      `;
+
+        case "pickup-dropoff":
+            return `
+        ${selectClause}
+        WHERE ST_Within(
+          ST_GeomFromGeoJSON("${pickupCol}"),
+          ST_GeomFromGeoJSON('${pickupRegion}')
+        )
+        AND ST_Within(
+          ST_GeomFromGeoJSON("${dropoffCol}"),
+          ST_GeomFromGeoJSON('${dropoffRegion}')
+        )
+        ${dateFilter}
+        LIMIT ${limit}
+      `;
+
+        case "directional":
+            return `
+        ${selectClause}
+        WHERE ST_Within(
+          ST_GeomFromGeoJSON("${pickupCol}"),
+          ST_GeomFromGeoJSON('${pickupRegion}')
+        )
+        AND (
+          ST_Within(
+            ST_GeomFromGeoJSON("${dropoffCol}"),
+            ST_GeomFromGeoJSON('${dropoffRegion}')
+          )
+          OR ST_Within(
+            ST_GeomFromGeoJSON("${dropoffCol}"),
+            ST_GeomFromGeoJSON('${bufferedLine}')
+          )
+        )
+        ${dateFilter}
+        LIMIT ${limit}
+      `;
+
+        default:
+            throw new Error(`Unknown query type: ${type}`);
+    }
+};
+
+
+export {
+    createPickupMarkerEl,
+    createDropoffMarkerEl,
+    pickupHeatmapPaint,
+    dropoffHeatmapPaint,
+    transformQueryResults,
+    buildDateFilter,
+    constructQuery
+};
