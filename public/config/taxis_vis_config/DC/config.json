@@ -1,0 +1,41 @@
+{
+  "name": "DC",
+  "dbPath": "/config/taxis_vis_config/DC/database/taxis_dc.duckdb",
+  "datetimeColumns": {
+    "pickup": "tpep_pickup_datetime",
+    "dropoff": "tpep_dropoff_datetime"
+  },
+  "locationColumns": {
+    "pickup": "pickup",
+    "dropoff": "dropoff"
+  },
+  "tableName": "trips",
+  "logical_db_to_required_columns": {
+    "trip_distance": "MILEAGE",
+    "fare_amount": "FAREAMOUNT",
+    "payment_type": "PAYMENTTYPE",
+    "pickup_datetime": "tpep_pickup_datetime",
+    "dropoff_datetime": "tpep_dropoff_datetime"
+  },
+  "neighborhoodKeys": [
+    "NBH_NAMES"
+  ],
+  "mapSettings": {
+    "tileLayer": "mapbox://styles/mapbox/navigation-night-v1",
+    "threeDEnabled": false,
+    "center": "dc",
+    "zoom": 11
+  },
+  "geoJsonLayers": [
+    {
+      "id": "dc-neighborhoods-layer",
+      "name": "neighborhood",
+      "url": "/config/taxis_vis_config/DC/geojson_layers/neighborhoods.geojson",
+      "style": {
+        "color": "#8206a9",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    }
+  ]
+}
