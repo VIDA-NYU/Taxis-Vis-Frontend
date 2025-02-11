@@ -11,3 +11,18 @@ export const fetchGeoJson = async (url) => {
         throw error;
     }
 };
+
+export const loadGeoJsonLayers = async (layersConfig = []) => {
+    try {
+        const layersData = await Promise.all(
+            layersConfig.map(async (layer) => ({
+                ...layer,
+                geojsonData: layer.data ? layer.data : await fetchGeoJson(layer.url),
+            }))
+        );
+        return layersData;
+    } catch (error) {
+        console.error("Error loading GeoJSON layers:", error);
+        return [];
+    }
+};

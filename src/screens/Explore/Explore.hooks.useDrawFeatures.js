@@ -1,5 +1,5 @@
 import {useState, useCallback} from "react";
-import {consolidateQueries} from "./Explore.queries";
+import {consolidateQueries} from "./Explore.utils";
 
 export default function useDrawFeatures(bufferDistance, dateRange, setDateRange) {
     const [features, setFeatures] = useState({

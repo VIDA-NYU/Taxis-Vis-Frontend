@@ -5,21 +5,23 @@ import GeoJsonLayersPanel from "../../components/GeoJsonLayersPanel/GeoJsonLayer
 import ToolbarPanel from "../../components/ToolbarPanel/ToolbarPanel";
 import TaxisVisGeoSpatialManager from "../../components/TaxisVisGeoSpatialManager/TaxisVisGeoSpatialManager";
 import QueryDescriptionPanel from "../../components/QueryDescriptionPanel/QueryDescriptionPanel";
-import DataAnalysisPanel from "../../components/DataAnalysisPanel/DataAnalysisPanel";
+import DataAnalysisManager from "../../components/DataAnalysisManager/DataAnalysisManager";
 import PlotVisualisationPanel from "../../components/PlotVisualisationPanel/PlotVisualisationPanel";
 import {
     AttachMoney as MoneyIcon,
     CreditCard as CreditCardIcon,
     HourglassTop as HourglassIcon,
     LineStyle as LineStyleIcon,
-    ScatterPlot as ScatterPlotIcon
+    ScatterPlot as ScatterPlotIcon,
 } from "@mui/icons-material";
 import "./Explore.styles.css";
-import {loadMapConfig, loadGeoJsonLayers} from "./Explore.config";
-import useDrawFeatures from "./Explore.useDrawFeatures";
+import useDrawFeatures from "./Explore.hooks.useDrawFeatures";
+import {useAppConfig} from "../../providers/DuckDB/DuckDBProvider";
+import {loadGeoJsonLayers} from "./Explore.services";
+import {Navigate} from "react-router-dom";
 
 const Explore = () => {
-    const [mapConfig, setMapConfig] = useState(null);
+    const config = useAppConfig();
     const [geoJsonLayers, setGeoJsonLayers] = useState([]);
     const [bufferDistance, setBufferDistance] = useState(600);
     const [filteredTrips, setFilteredTrips] = useState([]);
@@ -30,47 +32,48 @@ const Explore = () => {
         handleCreate,
         handleUpdate,
         handleDelete,
-        handleDateRangeChange
+        handleDateRangeChange,
     } = useDrawFeatures(bufferDistance, dateRange, setDateRange);
     const [isPlotlyVisible, setIsPlotlyVisible] = useState(false);
     const [currentPlot, setCurrentPlot] = useState({
         title: "",
         plotData: null,
-        plotLayout: null
+        plotLayout: null,
     });
 
-    useEffect(() => {
-        (async () => {
-            const config = await loadMapConfig();
-            setMapConfig(config?.mapSettings);
-            const layers = await loadGeoJsonLayers(config?.geoJsonLayers || []);
+    if (!config) {
+        return <Navigate to="/" replace/>;
+    }
 
-            if (config?.mapSettings?.threeDEnabled === true) {
+    useEffect(() => {
+        if (!config || !config.geoJsonLayers) return;
+        (async () => {
+            const layers = await loadGeoJsonLayers(config.geoJsonLayers);
+            if (config.mapSettings?.threeDEnabled === true) {
                 layers.push({
                     id: "3d-buildings",
                     name: "3D Buildings",
-                    type: "fill-extrusion"
+                    type: "fill-extrusion",
                 });
             }
-
             setGeoJsonLayers(layers);
         })();
-    }, []);
+    }, [config]);
 
     return (
         <Provider theme={defaultTheme} colorScheme="light">
             <div className="home-app-container">
-                {mapConfig && (
+                {config && config.mapSettings && (
                     <CoreMap
-                        tileLayer={mapConfig.tileLayer || "mapbox://styles/mapbox/streets-v12"}
-                        center={mapConfig.center || [40.7128, -74.0060]}
-                        zoom={mapConfig.zoom || 12}
+                        tileLayer={config.mapSettings.tileLayer || "mapbox://styles/mapbox/streets-v12"}
+                        center={config.mapSettings.center || [-74.0060, 40.7128]}
+                        zoom={config.mapSettings.zoom || 12}
                     >
                         {geoJsonLayers.length > 0 && (
                             <GeoJsonLayersPanel layers={geoJsonLayers} position="bottom-right"/>
                         )}
                         <ToolbarPanel
-                            center={mapConfig.center || [40.7128, -74.0060]}
+                            center={config.mapSettings.center || [40.7128, -74.0060]}
                             features={features}
                             onCreate={handleCreate}
                             onUpdate={handleUpdate}
@@ -87,75 +90,76 @@ const Explore = () => {
                                 radius: 20,
                                 blur: 15,
                                 max: 1.0,
-                                gradient: {0.4: "orange", 0.65: "yellow", 1: "red"}
+                                gradient: {0.4: "orange", 0.65: "yellow", 1: "red"},
                             }}
                             markerColors={{pickup: "blue", dropoff: "orange"}}
                             limit={100000}
                         />
                         <QueryDescriptionPanel
                             queries={queries}
-                            limit={100000}
                             timeRange={dateRange}
+                            geoJsonLayers={geoJsonLayers}
+                            config={config}
                         />
                     </CoreMap>
                 )}
-                <DataAnalysisPanel
+                <DataAnalysisManager
                     position="top-right"
                     analyses={[
                         {
                             name: "Trip Duration Histogram",
                             endpoint: "trip-duration-histogram",
                             icon: <HourglassIcon/>,
-                            requiredColumns: ["pickup_datetime", "dropoff_datetime"]
+                            requiredColumns: ["pickup_datetime", "dropoff_datetime"],
                         },
                         {
                             name: "Peak Hours Bar Chart",
                             endpoint: "peak-hours-bar",
                             icon: <LineStyleIcon/>,
-                            requiredColumns: ["pickup_datetime"]
+                            requiredColumns: ["pickup_datetime"],
                         },
                         {
                             name: "Fare Distribution Box Plot",
                             endpoint: "fare-distribution-box",
                             icon: <MoneyIcon/>,
-                            requiredColumns: ["fare_amount"]
+                            requiredColumns: ["fare_amount"],
                         },
                         {
                             name: "Passenger Count Pie Chart",
                             endpoint: "passenger-count-pie",
                             icon: <CreditCardIcon/>,
-                            requiredColumns: ["passenger_count"]
+                            requiredColumns: ["passenger_count"],
                         },
                         {
                             name: "Payment Type Pie Chart",
                             endpoint: "payment-type-pie",
                             icon: <CreditCardIcon/>,
-                            requiredColumns: ["payment_type"]
+                            requiredColumns: ["payment_type"],
                         },
                         {
                             name: "Tip Amount Box Plot",
                             endpoint: "tip-amount-box",
                             icon: <MoneyIcon/>,
-                            requiredColumns: ["tip_amount"]
+                            requiredColumns: ["tip_amount"],
                         },
                         {
                             name: "Distance-Fare Scatter Plot",
                             endpoint: "distance-fare-scatter-plot",
                             icon: <ScatterPlotIcon/>,
-                            requiredColumns: ["trip_distance", "fare_amount"]
+                            requiredColumns: ["trip_distance", "fare_amount"],
                         },
                         {
                             name: "Time Series Line Chart",
                             endpoint: "time-series-line",
                             icon: <LineStyleIcon/>,
-                            requiredColumns: ["pickup_datetime"]
-                        }
+                            requiredColumns: ["pickup_datetime"],
+                        },
                     ]}
                     onPlotReady={(chart) => {
                         setCurrentPlot({
                             title: chart.name,
                             plotData: chart.data,
-                            plotLayout: chart.layout
+                            plotLayout: chart.layout,
                         });
                         setIsPlotlyVisible(true);
                     }}
