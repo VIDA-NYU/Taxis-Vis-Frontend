@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/repo_icon.png" alt="Taxis Vis Icon" width="150"/>
+  <img src="public/resources/repo_icon.png" alt="Taxis Vis Icon" width="150"/>
   <h1><strong>Taxis Vis</strong></h1>
   <h4>Frontend-side 🎨</h4>
 
@@ -21,7 +21,7 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 </div>
 
 <div align="center">
-  <img src="./public/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
+  <img src="public/resources/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
 </div>
 
 ## 📣 **Latest News**

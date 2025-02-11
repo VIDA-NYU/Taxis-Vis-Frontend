@@ -34,7 +34,7 @@ const HomePage = () => {
         <div className="homepage-container">
             <div className="homepage-card">
                 <div className="homepage-card-left">
-                    <img src="/taxis_vis.png" alt="Taxi Icon" className="homepage-card-image"/>
+                    <img src="/resources/taxis_vis.png" alt="Taxi Icon" className="homepage-card-image"/>
                 </div>
                 <div className="homepage-card-right">
                     <h1 className="homepage-card-title">Taxis Vis Reproduction</h1>
