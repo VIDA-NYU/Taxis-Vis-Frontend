@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
-const ToolbarPanelButton = ({
+const ToolbarPanelUtilsButton = ({
                                 icon,
                                 title,
                                 onClick,
@@ -35,7 +35,7 @@ const ToolbarPanelButton = ({
     );
 };
 
-ToolbarPanelButton.propTypes = {
+ToolbarPanelUtilsButton.propTypes = {
     icon: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
@@ -45,4 +45,4 @@ ToolbarPanelButton.propTypes = {
     ariaLabel: PropTypes.string,
 };
 
-export default ToolbarPanelButton;
+export default ToolbarPanelUtilsButton;

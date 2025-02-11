@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Slider from "@mui/material/Slider";
 
-const ToolbarPanelSlider = ({
+const ToolbarPanelUtilsSlider = ({
                                 bufferDistance,
                                 onBufferDistanceChange,
                                 label = "Buffer Distance",
@@ -31,7 +31,7 @@ const ToolbarPanelSlider = ({
     );
 };
 
-ToolbarPanelSlider.propTypes = {
+ToolbarPanelUtilsSlider.propTypes = {
     bufferDistance: PropTypes.number.isRequired,
     onBufferDistanceChange: PropTypes.func.isRequired,
     label: PropTypes.string,
@@ -40,4 +40,4 @@ ToolbarPanelSlider.propTypes = {
     step: PropTypes.number
 };
 
-export default ToolbarPanelSlider;
+export default ToolbarPanelUtilsSlider;

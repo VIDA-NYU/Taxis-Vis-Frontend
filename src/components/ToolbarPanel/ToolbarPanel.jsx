@@ -1,24 +1,17 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import {
-    Hail,
-    Tour,
-    Moving,
-    RemoveRoad,
-    ExpandLess,
-    ExpandMore,
-    DateRange,
-} from "@mui/icons-material";
+import {DateRange, ExpandLess, ExpandMore, Hail, Moving, RemoveRoad, Tour,} from "@mui/icons-material";
 import {DateRangePicker} from "@adobe/react-spectrum";
 import "./ToolbarPanel.styles.css";
-import ToolbarPanelButton from "./ToolbarPanel.button";
-import ToolbarPanelSlider from "./ToolbarPanel.slider";
-import {API_URLS} from "../../config/apiUrls";
-import useMapBoxDrawHandler from "./ToolbarPanel.useMapBoxDrawHandler";
+import ToolbarPanelUtilsButton from "./ToolbarPanel.utils.button";
+import ToolbarPanelUtilsSlider from "./ToolbarPanel.utils.slider";
+import useMapBoxDrawHandler from "./ToolbarPanel.hooks.useMapBoxDrawHandler";
 import {fetchDateRange} from "./ToolbarPanel.services";
+import {useDuckDb} from "duckdb-wasm-kit";
+import {parseDate} from "@internationalized/date";
+import {useAppConfig} from "../../providers/DuckDB/DuckDBProvider";
 
 const ToolbarPanel = ({
-                          mapApiUrl = API_URLS.TRIPS.DATE_RANGE,
                           features,
                           onCreate,
                           onUpdate,
@@ -29,10 +22,12 @@ const ToolbarPanel = ({
                           map,
                           draw,
                       }) => {
+    const {db, loading} = useDuckDb();
     const [activeButton, setActiveButton] = useState(null);
     const [isMinimized, setIsMinimized] = useState(false);
     const [initialDateRange, setInitialDateRange] = useState({});
     const [localDateRange, setLocalDateRange] = useState({});
+    const config = useAppConfig();
 
     const isSliderVisible = activeButton === "directional";
     const isDatePickerVisible = activeButton === "calendar";
@@ -89,15 +84,26 @@ const ToolbarPanel = ({
     }
 
     useEffect(() => {
+        if (!db || loading) return;
+
         (async () => {
             try {
-                const dateRange = await fetchDateRange(mapApiUrl);
-                setInitialDateRange(dateRange);
-                setLocalDateRange(dateRange);
+                const dateRange = await fetchDateRange(db, config);
+
+                setInitialDateRange({
+                    start: dateRange.start ? parseDate(dateRange.start.split("T")[0]) : null,
+                    end: dateRange.end ? parseDate(dateRange.end.split("T")[0]) : null
+                });
+
+                setLocalDateRange({
+                    start: dateRange.start ? parseDate(dateRange.start.split("T")[0]) : null,
+                    end: dateRange.end ? parseDate(dateRange.end.split("T")[0]) : null
+                });
             } catch (error) {
+                console.error("Failed to fetch date range from DuckDB:", error);
             }
         })();
-    }, [mapApiUrl]);
+    }, [db, loading]);
 
     useMapBoxDrawHandler({
         draw,
@@ -113,7 +119,7 @@ const ToolbarPanel = ({
         <>
             <div className={`toolbar_panel-container ${isMinimized ? "minimized" : ""}`}>
                 <div className="toolbar_panel-minimize-btn-container">
-                    <ToolbarPanelButton
+                    <ToolbarPanelUtilsButton
                         icon={isMinimized ? <ExpandMore/> : <ExpandLess/>}
                         title={isMinimized ? "Expand Toolbar" : "Minimize Toolbar"}
                         onClick={() => setIsMinimized(!isMinimized)}
@@ -124,7 +130,7 @@ const ToolbarPanel = ({
 
                 {!isMinimized && (
                     <>
-                        <ToolbarPanelButton
+                        <ToolbarPanelUtilsButton
                             icon={<Hail/>}
                             title="Draw A Pickup ROI"
                             onClick={() =>
@@ -138,7 +144,7 @@ const ToolbarPanel = ({
                             ariaLabel="Draw A Pickup ROI"
                         />
 
-                        <ToolbarPanelButton
+                        <ToolbarPanelUtilsButton
                             icon={<Tour/>}
                             title="Draw A Dropoff ROI"
                             onClick={() =>
@@ -152,7 +158,7 @@ const ToolbarPanel = ({
                             ariaLabel="Draw A Dropoff ROI"
                         />
 
-                        <ToolbarPanelButton
+                        <ToolbarPanelUtilsButton
                             icon={<Moving/>}
                             title="Draw A Directional Line"
                             onClick={() =>
@@ -169,7 +175,7 @@ const ToolbarPanel = ({
                             ariaLabel="Draw A Directional Line"
                         />
 
-                        <ToolbarPanelButton
+                        <ToolbarPanelUtilsButton
                             icon={<RemoveRoad/>}
                             title="Delete Existing ROI"
                             onClick={handleDelete}
@@ -179,7 +185,7 @@ const ToolbarPanel = ({
                             ariaLabel="Delete Existing ROI"
                         />
 
-                        <ToolbarPanelButton
+                        <ToolbarPanelUtilsButton
                             icon={<DateRange/>}
                             title="Select Date Range"
                             onClick={() => {
@@ -215,7 +221,7 @@ const ToolbarPanel = ({
             )}
 
             {isSliderVisible && (
-                <ToolbarPanelSlider
+                <ToolbarPanelUtilsSlider
                     bufferDistance={bufferDistance}
                     onBufferDistanceChange={setBufferDistance}
                     label="Buffer Distance"
