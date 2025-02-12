@@ -1,11 +1,10 @@
 .core_map-container {
-    display: flex;
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 
-
 .mapbox-gl-draw {
-    display: none;
+  display: none;
 }

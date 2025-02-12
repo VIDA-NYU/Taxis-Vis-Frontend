@@ -1,118 +1,119 @@
 .geo_json_layers-panel {
-    position: absolute;
-    z-index: 5000;
-    width: 220px;
-    padding: 12px;
-    border-radius: 16px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
-    background: rgba(255, 255, 255, 0.95);
-    overflow: hidden;
-    max-height: 400px;
-    opacity: 1;
-    transition: max-height 0.1s ease, transform 0.1s ease;
-    transform: scale(1);
+  position: absolute;
+  z-index: 5000;
+  width: 220px;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.95);
+  overflow: hidden;
+  max-height: 400px;
+  opacity: 1;
+  transition: max-height 0.1s ease,
+    transform 0.1s ease;
+  transform: scale(1);
 }
 
 .geo_json_layers-panel.minimized {
-    max-height: 40px;
-    padding: 8px;
-    opacity: 0.8;
-    transform: scale(0.98);
+  max-height: 40px;
+  padding: 8px;
+  opacity: 0.8;
+  transform: scale(0.98);
 }
 
 .geo_json_layers-panel.top-right {
-    top: 20px;
-    right: 20px;
+  top: 20px;
+  right: 20px;
 }
 
 .geo_json_layers-panel.top-left {
-    top: 20px;
-    left: 20px;
+  top: 20px;
+  left: 20px;
 }
 
 .geo_json_layers-panel.bottom-right {
-    bottom: 20px;
-    right: 20px;
+  bottom: 20px;
+  right: 20px;
 }
 
 .geo_json_layers-panel.bottom-left {
-    bottom: 20px;
-    left: 20px;
+  bottom: 20px;
+  left: 20px;
 }
 
 .geo_json_layers-header {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: margin-bottom 0.1s ease;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: margin-bottom 0.1s ease;
 }
 
 .geo_json_layers-header.minimized {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .geo_json_layers-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    opacity: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 1;
 }
 
 .geo_json_layers-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 6px 10px;
-    background: linear-gradient(145deg, #f5f5f5, #e0e0e0);
-    border-radius: 10px;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.1s ease;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: linear-gradient(145deg, #f5f5f5, #e0e0e0);
+  border-radius: 10px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.1s ease;
+  cursor: pointer;
 }
 
 .geo_json_layers-item:hover {
-    background: linear-gradient(145deg, #e0e0e0, #f0f0f0);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(145deg, #e0e0e0, #f0f0f0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .geo_json_layers-icon {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .geo_json_layers-name {
-    flex-grow: 1;
-    margin-left: 10px;
-    font-size: 0.85rem;
-    color: #333;
+  flex-grow: 1;
+  margin-left: 10px;
+  font-size: 0.85rem;
+  color: #333;
 }
 
 .geo_json_layers-checkbox {
-    cursor: pointer;
-    accent-color: #007aff;
-    transform: scale(0.9);
+  cursor: pointer;
+  accent-color: #007aff;
+  transform: scale(0.9);
 }
 
 .geo_json_layers-minimize-btn {
-    background: none;
-    box-shadow: none;
-    padding: 2px;
-    transition: transform 0.1s ease;
+  background: none;
+  box-shadow: none;
+  padding: 2px;
+  transition: transform 0.1s ease;
 }
 
 .geo_json_layers-minimize-btn:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .geo_json_layers-minimize-btn.small-btn svg {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }

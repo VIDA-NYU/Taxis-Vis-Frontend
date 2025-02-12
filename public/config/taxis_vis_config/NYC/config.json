@@ -1,0 +1,60 @@
+{
+  "name": "NYC",
+  "dbPath": "/config/taxis_vis_config/NYC/database/taxis_nyc.duckdb",
+  "datetimeColumns": {
+    "pickup": "tpep_pickup_datetime",
+    "dropoff": "tpep_dropoff_datetime"
+  },
+  "locationColumns": {
+    "pickup": "pickup",
+    "dropoff": "dropoff"
+  },
+  "tableName": "trips",
+  "mapSettings": {
+    "tileLayer": "streets-v12-2D",
+    "threeDEnabled": false,
+    "center": "nyc",
+    "zoom": 11
+  },
+  "logical_db_to_required_columns": {
+    "trip_distance": "trip_distance",
+    "fare_amount": "fare_amount",
+    "payment_type": "payment_type",
+    "tip_amount": "tip_amount",
+    "passenger_count": "passenger_count",
+    "pickup_datetime": "tpep_pickup_datetime",
+    "dropoff_datetime": "tpep_dropoff_datetime"
+  },
+  "geoJsonLayers": [
+    {
+      "id": "nyc-boroughs-layer",
+      "name": "NYCBoroughs",
+      "url": "/config/taxis_vis_config/NYC/geojson_layers/boroughs.geojson",
+      "style": {
+        "color": "#4E3FC8",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "nyc-neighbourhoods-layer",
+      "name": "neighborhood",
+      "url": "/config/taxis_vis_config/NYC/geojson_layers/neighborhoods.geojson",
+      "style": {
+        "color": "#8206a9",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "nyc-parks-layer",
+      "name": "NYCParks",
+      "url": "/config/taxis_vis_config/NYC/geojson_layers/parks.geojson",
+      "style": {
+        "color": "#298008",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    }
+  ]
+}

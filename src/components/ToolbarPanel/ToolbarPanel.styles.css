@@ -14,7 +14,8 @@
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(8px);
     overflow: hidden;
-    transition: 0.3s ease, opacity 0.3s ease;
+    transition: 0.3s ease,
+    opacity 0.3s ease;
     opacity: 1;
 }
 

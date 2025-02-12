@@ -1,0 +1,26 @@
+.duckdb-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.duckdb-error {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.duckdb-error-message {
+    color: red;
+    font-size: 1.5rem;
+    padding: 20px;
+    background-color: #fff;
+    border: 2px solid red;
+    border-radius: 10px;
+    text-align: center;
+}

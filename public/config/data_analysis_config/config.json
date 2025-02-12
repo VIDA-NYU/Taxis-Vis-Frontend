@@ -1,0 +1,11 @@
+{
+  "required_columns": [
+    "trip_distance",
+    "fare_amount",
+    "payment_type",
+    "tip_amount",
+    "passenger_count",
+    "pickup_datetime",
+    "dropoff_datetime"
+  ]
+}
