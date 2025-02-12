@@ -13,6 +13,14 @@
 
 ---
 
+> [!WARNING]
+> **🚨 Important Notice**:
+    This current repository and the Taxis-Vis-Data-Backend are put on hold.
+    The goal was to see what is possible to do with today tools on the Javascript end side for 
+    reproducing Taxis-VIS. Now it touches enough yet is not deleted because could be (re-)used.
+    Cheers! @Simon.
+ 
+
 <div align="center">
 
 _Greetings_ from the **Taxis Vis Frontend**! This project is a component of the larger **Taxis Vis** initiative, which
