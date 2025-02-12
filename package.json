@@ -1,6 +1,6 @@
 {
   "name": "taxis-vis-frontend",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "dependencies": {
     "@adobe/react-spectrum": "^3.39.0",
@@ -41,7 +41,8 @@
     "dev": "vite",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "rename-jsx": "find ./src -type f -name '*.js' -not -name '*.jsx' -not -name '*.ejs' -exec bash -c 'grep -l -E \"</|/>\" \"$0\"' {} \\; -exec bash -c 'mv \"$0\" \"${0%.js}.jsx\"' {} \\;"
+    "rename-jsx": "find ./src -type f -name '*.js' -not -name '*.jsx' -not -name '*.ejs' -exec bash -c 'grep -l -E \"</|/>\" \"$0\"' {} \\; -exec bash -c 'mv \"$0\" \"${0%.js}.jsx\"' {} \\;",
+    "setup:databases": "bash scripts/download_databases.sh"
   },
   "eslintConfig": {
     "extends": [

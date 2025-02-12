@@ -6,7 +6,17 @@ which include **GeoJSON layer management, Spatial Selections, Query Handling, an
 
 Each feature is accompanied by a brief **demo video**, which you can view directly from this README.
 
-Please bear with us as we are out of hands for the video-based compression potential post-process after uploading the videos!
+Please bear with us as we are out of hands for the video-based compression potential post-process by @Github !
+
+## 🚲 **Use In-Memory CSV**
+
+The following instructions demonstrate how to use an in-memory CSV file with the Taxis Vis platform.
+This is a temporary configuration that will not be saved, but can be used in memory without downloading any of our heavy
+databases
+but rather using your CSV datasets. We use DuckDB in the background to handle the data, creating an in-memory instance
+of your csv.
+
+https://github.com/user-attachments/assets/bd6d69ef-e669-417f-b580-d5c0e8560891
 
 ---
 
@@ -21,7 +31,13 @@ https://github.com/user-attachments/assets/7a030612-04a6-4739-801b-47c2ccfd5342
 
 ### **Toolbar Manager**
 
-Interact with the map using **drawing tools**, query functions, and selection capabilities.
+Interact with the map using **drawing tools**. Draw a `Pickup` Region of Interest (ROI) which
+draws a `blue` ROI. Draw a `Dropoff` ROI which draws a `red` ROI. When both are together, they are considered as
+a union of both (i.e. Starting in the blue and ending in the red). Draw a `Directional` line which draws a `green` line
+indicating that the trip that starts in the blue yet does not end in the red but along the green line should be
+considered.
+
+Lastly, the `Calendar picker` filter is used to filter trips based on the time range available per the database.
 
 https://github.com/user-attachments/assets/80b0b9e4-891e-4015-acaf-83af88ad346c
 

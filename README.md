@@ -6,7 +6,8 @@
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Mapbox GL JS](https://img.shields.io/badge/Mapbox%20GL%20JS-3BB3E4?style=for-the-badge&logo=mapbox&logoColor=white)
 ![Plotly.js](https://img.shields.io/badge/Plotly.js-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
-![Version](https://img.shields.io/badge/Version-0.3.0_alpha-red?style=for-the-badge)
+![DuckDB-WASM](https://img.shields.io/badge/DuckDB--WASM-FFC107?style=for-the-badge&logo=duckdb&logoColor=black)
+![Version](https://img.shields.io/badge/Version-0.4.0-red?style=for-the-badge)
 
 </div>
 
@@ -22,43 +23,37 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 </div>
 
 <div align="center">
-  <img src="public/resources/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
+  <img src="./public/resources/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
 </div>
 
-## 📣 **Latest News**
-
-> [!IMPORTANT]
+> [!IMPORTANT] > **📣 Latest News**
 >
-> ### **Latest News**
->
-> - **🚀 Taxis Vis Features Videos Available!**: We have added a series of **feature demonstration videos** to the
+> - _[0.4.0]_ **🚀 DuckDB-WASM Integration & Backend Removal**: We have removed **Taxis-Vis-GeoSpatial Backend** 🎉 and
 
-    repository.These videos showcase the platform's capabilities, including **GeoJSON layer management, Spatial
-    Selections, Query Handling, and Multi-City Exploration**. You can find them in the [FEATURES.md](./FEATURES.md) file
-    of this
-    repository (root).
+    replaced it with **DuckDB-WASM**! Thanks to **WebAssembly-powered DuckDB**, we can now perform the same *
+    *geo-computations directly in the frontend**, making the system more lightweight and efficient. Duck! 🦆✨
 
-> - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have finally migrated from **Leaflet** to **Mapbox GL JS** for
+> - **🚀 Taxis Vis Features Videos Available!**: We have added a series of **feature demonstration videos** showcasing \*
 
-    enhanced map performance, interactivity, and styling options.
-    While Mapbox now requires an API access token, it remains largely **free** for projects like **Taxis Vis**, where
-    the expected usage is well within the **50,000 free map loads per month**.
-    We do not utilise any other premium Mapbox services beyond tile serving, making this transition seamless for
-    users. Make sure to configure your `.env` file with a valid **Mapbox API token** (see the setup instructions below).
+    *GeoJSON layer management, Spatial Selections, Query Handling, and Multi-City Exploration**. You can find them in
+    the [FEATURES.md](./FEATURES.md) file of this repository (root).
 
-> - **🎉 DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis
+> - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have migrated from **Leaflet** to **Mapbox GL JS** for
 
-    Vis. You can find these in the `examples/` directory of this repository.
+    enhanced map performance, interactivity, and styling options. While Mapbox now requires an API access token, it
+    remains largely **free** for projects like **Taxis Vis**, where usage stays within **50,000 free map loads per month
+    **. We only use **tile serving**, ensuring a seamless transition. Configure your `.env` with a valid **Mapbox API
+    token** (see setup instructions).
 
-> - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest —
+> - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: Adapt this project for **any** city with available taxi data and
 
-    provided you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to
-    accommodate various schemas and polygon data with small config changes.
+    minimal GeoJSON resources. The system architecture is flexible enough to accommodate various schemas and polygon
+    data with minimal config changes.
 
-> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like
+> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the **Taxis-Vis paper** is entirely feasible with modern tools like \*
 
-    React, Leaflet, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions,
-    such as specialised or custom databases.
+    *React, Leaflet, DuckDB, Django**, and more. We've eliminated the high hurdles of older solutions requiring
+    specialized or custom databases.
 
 ## 🚀 **Overview**
 
@@ -67,12 +62,15 @@ The `Taxis Vis Frontend` provides geo-spatial insights and interactive visualisa
 
 It communicates with:
 
-1. A **GeoSpatial Node.js + DuckDB Backend** – performing spatial & filtering queries.
+1. A **DuckDB Web Assembly Module** – performing spatial & filtering queries.
 2. A **Data Analysis Python Django + Pandas Backend** – performing analyses & generating chart data.
 
 While not fully replicating every feature from the paper, this **proof-of-concept** demonstrates the feasibility of
 developing a robust, real-time, interactive taxi data exploration tool using _today_ tools without weeks or months of
 development time.
+
+If you would like to see the current latest version in video examples, please refer to the [FEATURES.md](./FEATURES.md)
+file.
 
 ---
 
@@ -82,82 +80,15 @@ development time.
 - **Spatial Queries** – Filter trips based on spatial relationships (e.g., union of **Pickup** and **Dropoff** regions,
   **Directional** queries, etc.).
 - **Temporal Constraints** – Combine **time ranges** with your spatial queries to refine trip filtering.
-- **Data Analysis** – Generate histograms, box plots, scatter plots, and other charts from the filtered data.
+- **(Optional) Data Analysis** – Generate histograms, box plots, scatter plots, and other charts from the filtered data.
 
----
-
-## 🎛️ **Configuration Management**
-
-<details>
-<summary> 👀 Curious how to deal with your own city of interest, taxi trips data of interest ? Click here to expand! ➡️ </summary>
-
-### **A. `mapConfig.json` for Map Setup and Layers**
-
-The **Frontend** relies on `public/config/mapConfig.json` to configure:
-
-1. **Map Defaults** (tile layer, center coordinates, zoom level, etc.)
-2. **GeoJSON Layers** – the static geojson polygons/lines you want to display (e.g., city boundaries, boroughs,
-   neighborhoods, etc.)
-
-**Example**:
-
-```json
-{
-  "mapSettings": {
-    "tileLayer": "outdoors-v12-2D",
-    "center": "nyc",
-    "threeDEnabled": false,
-    "zoom": 11
-  },
-  "geoJsonLayers": [
-    {
-      "id": "nyc-layer",
-      "name": "NYCBoroughs",
-      "url": "/geojson/NYC/boroughs.geojson",
-      "style": {
-        "color": "#4E3FC8",
-        "weight": 2,
-        "opacity": 0.5
-      }
-    }
-  ]
-}
-```
-
-- **`mapSettings`**: Contains your default map center, zoom and threeD settings.
-- **`geoJsonLayers`**: Each layer has an `id`, a `name`, a `url` path to the `.geojson` file, and an optional `style`.
-
-> [!NOTE]
+> [!TIP] > **🥱 Some Trips & Tricks**:
 >
-> - You can serve multiple **geoJSON layers** by adding them to the `"geoJsonLayers"` array.
-> - The **UI** can toggle layers **on/off** dynamically.
-> - **To enable 3D buildings**, add `"threeDEnabled": true` inside `"mapSettings"`.
-> - The 3D layer automatically overlays the city’s **vector buildings layer** when zoomed in.
+> - _Understanding the queries' outputs_: Note that most of the time, `blue` dots will represent **Pickup** trips data
 
-### **B. Adding a New City or Additional Layers**
+    points, while `red` dots will represent **Dropoff** trips data points, regardless of the query.
 
-1. **Copy** or place a new GeoJSON file in `public/geojson/<CityName>/<fileName>.geojson`.
-2. **Edit** `public/config/mapConfig.json` to add your new layer under `geoJsonLayers` with the correct relative path in
-   `url`.
-3. **Adjust** the map `center` and `zoom` in `mapSettings` if you want your new city to be the default view.
-
-### **Data Flow** (High-Level)
-
-1. **User Draws** a polygon on the map → This triggers an internal "features" state update in React.
-2. **Frontend** sends these “features” + time constraints to the **Geospatial Node.js Backend** at
-   `http://<host>:4000/api/trips/query`.
-3. **Geospatial Backend** returns the filtered trip data → The **Frontend** either displays them as markers or a
-   heatmap.
-4. **User** triggers a chart (e.g., “Trip Duration Histogram”) → The **Frontend** sends a CSV of the filtered trips to
-   the **Data Analysis Django Backend** at `http://<host>:8000/api/visualisation/<analysis-endpoint>`.
-5. **Django Backend** returns chart JSON → The **Frontend** uses Plotly to render the chart.
-
-### **C. Backend Configuration**
-
-We recommend checking the **GeoSpatial Node.js Backend** and **Data Analysis Django Backend** READMEs
-for their respective configurations.
-
-</details>
+> - _Double-clicking_:Double-clicking when drawing a polygon will automatically close the shape. Thanks `Mapbox`! 🌐
 
 ---
 
@@ -167,9 +98,8 @@ for their respective configurations.
 
 - **Node.js** installed on your system.
 - **npm** or **yarn** package manager installed.
-- **(Required)** Backends running for full functionality:
-   - [GeoSpatial Node.js Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
-   - [Data Analysis Django Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
+- **(Optional)** Backend running for full functionality:
+    - [Data Analysis Django Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
 
 ### **Setup**
 
@@ -197,111 +127,95 @@ for their respective configurations.
    - Replace `your-mapbox-access-token-here` with your actual Mapbox token. See
      further [Mapbox Access Token](https://docs.mapbox.com/help/getting-started/access-tokens/).
 
-4. **Start** the development server:
-   ```bash
-   npm start
-   ```
-5. **Open** `http://localhost:3000` in your browser.
+4. **(Optional) Download Current Config Databases (NYC, DC)**:
+    - To download the current configuration databases for **New York City** and **Washington DC**, run:
+      ```bash
+      pip install gdown # Super Cool OSS to use Google Drive API https://github.com/wkentaro/gdown
+      gdown "https://drive.google.com/uc?id=1eaMIsOabVvYi7M-VWi_6WnZf2n14bXdE"
+      ```
+    - This will download the necessary `duckDB` database file for **New York City**. Then, you simply need to drag and
+      drop it into the `public/config/taxis_vis_config/NYC/database/` folder || or run:
+      ```bash
+      mv taxi_vis_nyc.duckdb public/config/taxis_vis_config/NYC/database/
+      ```
+
+> [!TIP]  
+> 💡 **Quick Setup:** Instead of running the steps manually, you can simply run:
+>
+> ```bash
+> npm run setup:configs
+> ```
+>
+> This will **automatically download** and place the NYC and DC configuration databases in their respective directories.
+> 🚀
 
 > [!NOTE]
-> If you need to point to different backend URLs, see `src/config/apiUrls.js` or adjust your environment variables. By
-> default, it expects the Node.js backend on `localhost:4000` and the Django backend on `localhost:8000`.
+> For **Washington DC**, the process is the same, but the link is different:
+>
+> ```bash
+> gdown "https://drive.google.com/uc?id=15_LWVegB56-uBwH3i0fuKoMHfL84XWuH"
+> mv taxi_vis_dc.duckdb public/config/taxis_vis_config/DC/database/
+> ```
 
-### 🎛️ **Configuration Management Example**
+5. **Start** the development server:
+   ```bash
+   npm run dev # or npm run start
+   ```
+6. **Open** `http://localhost:3000` in your browser.
+
+7. _(Optional) Configure Your Own City's Config (saved)_:
+   We recommend readers to view further in the [HOW-TO-CONFIG-OWN-CITY.md](./HOW-TO-CONFIG-OWN-CITY.md) file for more
+   details on how to configure your own city's data while saving the configuration.
+
+> [!NOTE]
+> If you need to point to different backend URLs, see `src/utils/apiUrls.js` or adjust your environment variables. By
+> default Django backend's on `localhost:8000`.
+
+---
+
+<div align="center">
+  <h2>💡 Design Philosophy</h2>
+</div>
+
+We started recreating `Taxis Vis` with the goal of relying on flexible, well-supported _semi/open-source_ tools at every
+corner of the project.
+
+Carefully selecting **React**, **Mapbox GL JS**, **DuckDB-WASM**, **Turf.js**, and **Plotly.js** as both our core `UI`
+and `database` technologies enables us to quickly adapt to new requirements while ensuring that they are well maintained
+and actively updated.  
+_All_ in one repository, _all_ on the frontend-client side, makes it very sustainable while efficient. Readers should be
+noted that this is primarily possible thanks to the **WebAssembly** module of `DuckDB`, as discussed in
+[this paper](https://dl.acm.org/doi/abs/10.14778/3554821.3554847).
+
+Similarly, our `data analysis` backend leverages **Python**, **Django**, and **Pandas**. This combination allows us to
+reproduce _substantial_ paper concepts without significant overhead, and in a shorter timeframe.
+In the long term, it could open the door for `machine learning` to be leveraged in that region of the overall pipeline.
+
+This philosophy therefore empowers us to create `reusable`, `maintainable` libraries of `urban-based` code that can be
+easily repurposed and extended for future research and industry projects. As of today,
+`Taxis-Vis` Frontend would not be considered a _core_ library at all; rather, it is highly specialised for a
+specific [use-case](https://ieeexplore.ieee.org/abstract/document/6634127/).
+However, the architecture is designed with future `core` libraries in mind. For this long-term vision, see further
+in [OSCUR](https://oscur.org/).
 
 <details>
-<summary> Let's follow up with the Config. management tutorial above, yet with a proper ex. ➡️ </summary>
+  <summary><h3>🚧 Limitations</h3></summary>
 
-## 💡 **Example Workflow**: Adding a `taxis_london.duckdb` Dataset
-
-1. **Place** a new GeoJSON (e.g., `london_neighborhoods.geojson`) in `public/geojson/London`.
-2. **Create** a new `mapConfig.json` (or modify the existing one) with:
-   ```json
-   {
-     "mapSettings": {
-       "tileLayer": "outdoors-v12-2D",
-       "center": "london",
-       "threeDEnabled": false,
-       "zoom": 11
-     },
-     "geoJsonLayers": [
-       {
-         "id": "london-neighborhoods",
-         "name": "London Neighborhoods",
-         "url": "/geojson/London/london_neighborhoods.geojson",
-         "style": {
-           "color": "#BADA55",
-           "weight": 2,
-           "opacity": 0.5
-         }
-       }
-     ]
-   }
-   ```
-3. **Backend** side: create or modify the `config.json` in the Node.js geospatial backend to point to
-   `taxis_london.duckdb` and set `filePath` to your London neighborhoods GeoJSON. (Refer to the GeoSpatial Node.js
-   Backend README.)
-4. **Restart** everything. The map now shows the London area and queries the `taxis_london.duckdb` behind the scenes.
+| **Limitation**            | **Details**                                                                                                                                                                                                                |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Large Data**            | Extremely large datasets may degrade performance in the browser. One limitation known with `DuckDB-WASM` is that you cannot upload files larger than 2GB. [Issue #1705](https://github.com/duckdb/duckdb-wasm/issues/1705) |
+| **Cross-Browser Testing** | Primarily tested on modern browsers (Chrome, Safari, Firefox, etc.). Older browsers might require polyfills.                                                                                                               |
+| **Other Map Management**  | The current version uses Mapbox GL JS with a Freemium focus. If you would like to use another map library, it will require reworking the toolbar drawing tools.                                                            |
 
 </details>
 
----
+<details>
+  <summary><h3>📖 Further Reading</h3></summary>
 
-## Design Philosophy 💡
-
-We started recreating `Taxis Vis` with the goal of relying on flexible, well-supported open-source tools at every corner
-of the project.
-
-Choosing **React**, **Mapbox GL JS**, and **Plotly.js** as our core UI technologies enables us to quickly adapt to new
-requirements while ensuring that they are well maintained and actively updated. Similarly, the geospatial computation
-side relies on cutting-edge technologies like **DuckDB** and libraries such as **Turf.js**, while our data analysis side
-leverages **Python**, **Django**, and **Pandas**. This combination allows us to reproduce substantial paper concepts
-without significant overhead, and in a shorter timeframe.
-
-This philosophy empowers us to create reusable, maintainable libraries of urban-based code that can be easily repurposed
-and extended for future research and industry projects.
-
----
-
-## Limitations 🚧
-
-| **Limitation**            | **Details**                                                                                                                                          |
-|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Backend Dependency**    | Most features rely on the Node.js + DuckDB backend (for spatial queries) and Django (for analytics). Without them, you only see the base map and UI. |
-| **Large Data**            | Extremely large datasets may degrade performance in the browser.                                                                                     |
-| **Cross-Browser Testing** | Primarily tested on modern browsers (Chrome, Safari, etc.). Older browsers might require polyfills.                                                  |
-| **Other Map Management**  | The current version uses Mapbox GL JS. If you would like to use another map library, it will require reworking the toolbar drawing tools.            |
-
----
-
-# **🎉 Adding Washington DC & NYC Examples**
-
-We now have two example READMEs illustrating how to integrate DC or NYC taxi data into Taxis Vis:
-
-1. **[DC Example](./examples/DC/example.md)** – Shows how to import Washington DC taxi data, create a DuckDB database,
-   and configure the frontend and backend.
-2. **[NYC Example](./examples/NYC/example.md)** – Demonstrates importing NYC taxi data, sampling large CSV files, and
-   setting up multiple GeoJSON layers (boroughs, neighborhoods, parks).
-
-These examples are located in the `examples/` directory. They serve as a step-by-step reference if you're configuring
-Taxis Vis for a new city or wish to see how we handle data conversion, DuckDB creation, and geojson layering.
-
-> [!TIP] > **Try them out**:
->
-> 1. **Clone** the project.
-> 2. Follow the **DC** or **NYC** instructions (or adapt them for your city).
-> 3. Enjoy your newly integrated taxi trip dataset! 🎉
-
----
-
-## 📖 **Further Reading**
-
-- [GeoSpatial Node.js Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
 - [Data Analysis Django Backend README](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
-- [Taxis Vis Features Videos](./FEATURES.md)
 - [The Original Paper (IEEE)](https://ieeexplore.ieee.org/abstract/document/6634127/)
 
----
+</details>
 
 **Happy Exploring!**  
 _The Taxis Vis Team_
