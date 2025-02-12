@@ -26,34 +26,28 @@ We aim to _revive_ the paper using _modern_ open-source tools.
   <img src="./public/resources/readme_main_cover.png" alt="Taxis Vis Main Cover"/>
 </div>
 
-> [!IMPORTANT] > **📣 Latest News**
->
+> [!IMPORTANT]
+> **📣 Latest News**
 > - _[0.4.0]_ **🚀 DuckDB-WASM Integration & Backend Removal**: We have removed **Taxis-Vis-GeoSpatial Backend** 🎉 and
-
-    replaced it with **DuckDB-WASM**! Thanks to **WebAssembly-powered DuckDB**, we can now perform the same *
-    *geo-computations directly in the frontend**, making the system more lightweight and efficient. Duck! 🦆✨
-
-> - **🚀 Taxis Vis Features Videos Available!**: We have added a series of **feature demonstration videos** showcasing \*
-
-    *GeoJSON layer management, Spatial Selections, Query Handling, and Multi-City Exploration**. You can find them in
+    replaced it with **DuckDB-WASM**! Thanks to **WebAssembly-powered DuckDB**, we can now perform the same
+    **geo-computations directly in the frontend**, making the system more lightweight and efficient. Duck! 🦆✨
+>
+> - **🚀 Taxis Vis Features Videos Available**: We have added a series of **feature demonstration videos** showcasing
+    **GeoJSON layer management, Spatial Selections, Query Handling, and Multi-City Exploration**. You can find them in
     the [FEATURES.md](./FEATURES.md) file of this repository (root).
-
+>
 > - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have migrated from **Leaflet** to **Mapbox GL JS** for
-
     enhanced map performance, interactivity, and styling options. While Mapbox now requires an API access token, it
-    remains largely **free** for projects like **Taxis Vis**, where usage stays within **50,000 free map loads per month
-    **. We only use **tile serving**, ensuring a seamless transition. Configure your `.env` with a valid **Mapbox API
+    remains largely **free** for projects like **Taxis Vis**, where usage stays within **50,000 free map loads per month**. We only use **tile serving**, ensuring a seamless transition. Configure your `.env` with a valid **Mapbox API
     token** (see setup instructions).
-
+>
 > - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: Adapt this project for **any** city with available taxi data and
-
     minimal GeoJSON resources. The system architecture is flexible enough to accommodate various schemas and polygon
     data with minimal config changes.
-
-> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the **Taxis-Vis paper** is entirely feasible with modern tools like \*
-
-    *React, Leaflet, DuckDB, Django**, and more. We've eliminated the high hurdles of older solutions requiring
-    specialized or custom databases.
+>
+> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the **Taxis-Vis paper** is entirely feasible with modern tools like
+    **React, Leaflet, DuckDB, Django**, and more. We've eliminated the high hurdles of older solutions requiring
+    specialised or custom databases.
 
 ## 🚀 **Overview**
 
@@ -82,13 +76,12 @@ file.
 - **Temporal Constraints** – Combine **time ranges** with your spatial queries to refine trip filtering.
 - **(Optional) Data Analysis** – Generate histograms, box plots, scatter plots, and other charts from the filtered data.
 
-> [!TIP] > **🥱 Some Trips & Tricks**:
->
+> [!TIP]
+> **🥱 Some Trips & Tricks**:
 > - _Understanding the queries' outputs_: Note that most of the time, `blue` dots will represent **Pickup** trips data
-
     points, while `red` dots will represent **Dropoff** trips data points, regardless of the query.
-
-> - _Double-clicking_:Double-clicking when drawing a polygon will automatically close the shape. Thanks `Mapbox`! 🌐
+>
+> - Double-clicking when drawing a polygon will automatically close the shape. Thanks `Mapbox Draw`! 🌐
 
 ---
 
@@ -143,7 +136,7 @@ file.
 > 💡 **Quick Setup:** Instead of running the steps manually, you can simply run:
 >
 > ```bash
-> npm run setup:configs
+> npm run setup:databases # Tested on OSX. Untested on Windows, nor Linux despite being same OSX's core it should be all right.
 > ```
 >
 > This will **automatically download** and place the NYC and DC configuration databases in their respective directories.
