@@ -1,166 +1,172 @@
 .config_modal_overlay {
-    position: relative;
-    z-index: 2000;
+  position: relative;
+  z-index: 2000;
 }
 
 .config_modal_content {
-    animation: config_modal_fadeInUp 0.4s ease forwards;
+  animation: config_modal_fadeInUp 0.4s ease forwards;
 }
 
 @keyframes config_modal_fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .config_modal_title {
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 0.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
 }
 
 .config_modal_close {
-    top: 16px;
-    right: 16px;
+  top: 16px;
+  right: 16px;
 }
 
 .config_modal_tabs {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .config_modal_tab-button {
-    padding: 0.75rem 1.25rem;
-    font-weight: 500;
-    border-radius: 12px 12px 0 0;
-    background: white;
-    color: black;
-    transition: background 0.2s ease-in-out, border-bottom 0.2s ease-in-out;
+  padding: 0.75rem 1.25rem;
+  font-weight: 500;
+  border-radius: 12px 12px 0 0;
+  background: white;
+  color: black;
+  transition: background 0.2s ease-in-out,
+    border-bottom 0.2s ease-in-out;
 }
 
 .config_modal_tab-button:hover {
-    background: #f5f5f5;
+  background: #f5f5f5;
 }
 
 .config_modal_tab-button.selected {
-    background: #f0f0f0;
-    border-bottom: 2px solid #333;
-    color: #333;
-    font-weight: bold;
+  background: #f0f0f0;
+  border-bottom: 2px solid #333;
+  color: #333;
+  font-weight: bold;
 }
 
 .config_modal_section {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .config_modal_label {
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    color: #333;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #333;
 }
 
 .config_modal_select {
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .config_modal_select:focus {
-    border-color: #007aff;
-    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
+  border-color: #007aff;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
 }
 
 .config_modal_step-indicator {
-    margin-bottom: 1rem;
-    border-radius: 8px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
 }
 
 .config_modal_layer-item {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .config_modal_primary-button {
-    background: linear-gradient(90deg, #0A84FF, #007AFF);
-    color: #fff;
-    border-radius: 50px;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 12px 20px;
-    transition: all 0.3s ease-in-out;
+  background: linear-gradient(90deg, #0a84ff, #007aff);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px 20px;
+  transition: all 0.3s ease-in-out;
 }
 
 .config_modal_primary-button:hover {
-    background: linear-gradient(90deg, #007AFF, #005BBB);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(10, 132, 255, 0.4);
+  background: linear-gradient(90deg, #007aff, #005bbb);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.4);
 }
 
 .config_modal_primary-button:active {
-    background: linear-gradient(90deg, #005BBB, #004499);
-    transform: translateY(0);
-    box-shadow: none;
+  background: linear-gradient(90deg, #005bbb, #004499);
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .config_modal_secondary-button {
-    background: #eee;
-    color: #333;
-    transition: background 0.3s ease, transform 0.1s ease;
+  background: #eee;
+  color: #333;
+  transition: background 0.3s ease,
+    transform 0.1s ease;
 }
 
 .config_modal_secondary-button:hover {
-    background: #ddd;
-    transform: translateY(-1px);
+  background: #ddd;
+  transform: translateY(-1px);
 }
 
 .config_modal_danger-button {
-    background: #e74c3c;
-    color: #fff;
-    transition: background 0.3s ease, transform 0.1s ease;
+  background: #e74c3c;
+  color: #fff;
+  transition: background 0.3s ease,
+    transform 0.1s ease;
 }
 
 .config_modal_danger-button:hover {
-    background: #d73929;
-    transform: translateY(-1px);
+  background: #d73929;
+  transform: translateY(-1px);
 }
 
 .dots_container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 8px 12px;
-    margin: 0 auto;
-    backdrop-filter: blur(20px);
-    border-radius: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin: 0 auto;
+  backdrop-filter: blur(20px);
+  border-radius: 50px;
 }
 
 .dots_container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 100px;
-    background: linear-gradient(0deg, #cecece, #b4b4b4), rgba(225, 225, 225, 0.44);
-    background-blend-mode: color-dodge, normal;
-    backdrop-filter: blur(25px);
-    z-index: 0;
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 100px;
+  background: linear-gradient(0deg, #cecece, #b4b4b4), rgba(225, 225, 225, 0.44);
+  background-blend-mode: color-dodge, normal;
+  backdrop-filter: blur(25px);
+  z-index: 0;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50px;
-    background: #000;
-    opacity: 0.3;
-    z-index: 1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50px;
+  background: #000;
+  opacity: 0.3;
+  z-index: 1;
 
-    transition: background 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  transition: background 0.3s ease,
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .dot.active {
-    background: #fff;
-    opacity: 1;
-    transform: scale(1.2);
+  background: #fff;
+  opacity: 1;
+  transform: scale(1.2);
 }

@@ -48,7 +48,6 @@
     margin-bottom: 8px;
 }
 
-
 .query_description-eye-icon {
     display: flex;
     justify-content: center;
@@ -63,13 +62,12 @@
     transition: all 0.3s ease-in-out;
 }
 
-
 .query_description-eye-icon:before {
-    content: "\1F441";
+    content: '\1F441';
 }
 
 .query_description-eye-icon:after {
-    content: " ";
+    content: ' ';
     position: absolute;
     width: 30px;
     height: 2px;
@@ -84,7 +82,6 @@
     gap: 16px;
     text-align: center;
 }
-
 
 .query_description-stacked-list {
     position: relative;

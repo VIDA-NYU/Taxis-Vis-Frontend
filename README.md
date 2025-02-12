@@ -7,15 +7,16 @@
 ![Mapbox GL JS](https://img.shields.io/badge/Mapbox%20GL%20JS-3BB3E4?style=for-the-badge&logo=mapbox&logoColor=white)
 ![Plotly.js](https://img.shields.io/badge/Plotly.js-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)
 ![Version](https://img.shields.io/badge/Version-0.3.0_alpha-red?style=for-the-badge)
+
 </div>
 
-______
+---
 
 <div align="center">
 
 _Greetings_ from the **Taxis Vis Frontend**! This project is a component of the larger **Taxis Vis** initiative, which
-draws inspiration from the paper [*Visual Exploration of Big Spatio-Temporal Urban Data: A Study of New York City Taxi
-Trips*](https://ieeexplore.ieee.org/abstract/document/6634127/).
+draws inspiration from the paper [_Visual Exploration of Big Spatio-Temporal Urban Data: A Study of New York City Taxi
+Trips_](https://ieeexplore.ieee.org/abstract/document/6634127/).
 We aim to _revive_ the paper using _modern_ open-source tools.
 
 </div>
@@ -27,24 +28,35 @@ We aim to _revive_ the paper using _modern_ open-source tools.
 ## 📣 **Latest News**
 
 > [!IMPORTANT]
+>
 > ### **Latest News**
+>
 > - **🚀 Taxis Vis Features Videos Available!**: We have added a series of **feature demonstration videos** to the
+
     repository.These videos showcase the platform's capabilities, including **GeoJSON layer management, Spatial
     Selections, Query Handling, and Multi-City Exploration**. You can find them in the [FEATURES.md](./FEATURES.md) file
     of this
     repository (root).
+
 > - _[0.3.0]_ **🗺️ Migration to Mapbox from Leaflet**: We have finally migrated from **Leaflet** to **Mapbox GL JS** for
-    enhanced map performance, interactivity, and styling options.  
+
+    enhanced map performance, interactivity, and styling options.
     While Mapbox now requires an API access token, it remains largely **free** for projects like **Taxis Vis**, where
-    the expected usage is well within the **50,000 free map loads per month**.  
+    the expected usage is well within the **50,000 free map loads per month**.
     We do not utilise any other premium Mapbox services beyond tile serving, making this transition seamless for
     users. Make sure to configure your `.env` file with a valid **Mapbox API token** (see the setup instructions below).
+
 > - **🎉 DC & NYC Examples**: We've added detailed READMEs for integrating Washington DC and NYC taxi data into Taxis
+
     Vis. You can find these in the `examples/` directory of this repository.
+
 > - _[0.2.0]_ **🌎 Taxis Vis Exploration Beyond NYC**: You can easily adapt this project for **any** city of interest —
+
     provided you have the taxi data and minimal geojson resources. The system's architecture is flexible enough to
     accommodate various schemas and polygon data with small config changes.
-> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like  
+
+> - _[0.1.0]_ **✅ Proof of Concept**: Reproducing the Taxis-Vis paper is **entirely feasible** with modern tools like
+
     React, Leaflet, DuckDB, Django, and more. We’ve eliminated the high hurdles typically seen in older solutions,
     such as specialised or custom databases.
 
@@ -116,6 +128,7 @@ The **Frontend** relies on `public/config/mapConfig.json` to configure:
 - **`geoJsonLayers`**: Each layer has an `id`, a `name`, a `url` path to the `.geojson` file, and an optional `style`.
 
 > [!NOTE]
+>
 > - You can serve multiple **geoJSON layers** by adding them to the `"geoJsonLayers"` array.
 > - The **UI** can toggle layers **on/off** dynamically.
 > - **To enable 3D buildings**, add `"threeDEnabled": true` inside `"mapSettings"`.
@@ -155,8 +168,8 @@ for their respective configurations.
 - **Node.js** installed on your system.
 - **npm** or **yarn** package manager installed.
 - **(Required)** Backends running for full functionality:
-    - [GeoSpatial Node.js Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
-    - [Data Analysis Django Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
+   - [GeoSpatial Node.js Backend](https://github.com/VIDA-NYU/Taxis-Vis-Geospatial-Backend)
+   - [Data Analysis Django Backend](https://github.com/VIDA-NYU/Taxis-Vis-Data-Backend)
 
 ### **Setup**
 
@@ -170,18 +183,19 @@ for their respective configurations.
    npm install
    ```
 3. **Create a `.env` file and configure Mapbox access**:
-    - You need a **Mapbox API token** to use this project. If you don’t have one, sign up
-      at [Mapbox](https://account.mapbox.com/access-tokens/) to generate an access token.
-    - Inside the project root, create a `.env` file:
-      ```bash
-      touch .env
-      ```
-    - Open the `.env` file and add:
-      ```plaintext
-      REACT_APP_MAPBOX_TOKEN=your-mapbox-access-token-here
-      ```
-    - Replace `your-mapbox-access-token-here` with your actual Mapbox token. See
-      further  [Mapbox Access Token](https://docs.mapbox.com/help/getting-started/access-tokens/).
+
+   - You need a **Mapbox API token** to use this project. If you don’t have one, sign up
+     at [Mapbox](https://account.mapbox.com/access-tokens/) to generate an access token.
+   - Inside the project root, create a `.env` file:
+     ```bash
+     touch .env
+     ```
+   - Open the `.env` file and add:
+     ```plaintext
+     REACT_APP_MAPBOX_TOKEN=your-mapbox-access-token-here
+     ```
+   - Replace `your-mapbox-access-token-here` with your actual Mapbox token. See
+     further [Mapbox Access Token](https://docs.mapbox.com/help/getting-started/access-tokens/).
 
 4. **Start** the development server:
    ```bash
@@ -272,8 +286,8 @@ We now have two example READMEs illustrating how to integrate DC or NYC taxi dat
 These examples are located in the `examples/` directory. They serve as a step-by-step reference if you're configuring
 Taxis Vis for a new city or wish to see how we handle data conversion, DuckDB creation, and geojson layering.
 
-> [!TIP]
-> **Try them out**:
+> [!TIP] > **Try them out**:
+>
 > 1. **Clone** the project.
 > 2. Follow the **DC** or **NYC** instructions (or adapt them for your city).
 > 3. Enjoy your newly integrated taxi trip dataset! 🎉

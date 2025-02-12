@@ -1,4 +1,4 @@
-__# DC Example: Importing GeoJSON and Creating DuckDB Database
+\_\_# DC Example: Importing GeoJSON and Creating DuckDB Database
 
 ![DC](./DC_cover.png)
 
@@ -77,8 +77,7 @@ output_file = 'taxi_dc_2019_01_convert.csv'  # Desired output filename
 convert_pipe_to_comma(input_file, output_file)
 ```
 
-> [!IMPORTANT]
-> **Why Convert?**  
+> [!IMPORTANT] > **Why Convert?**  
 > DuckDB efficiently handles comma-separated values. Converting ensures that all data is correctly parsed and stored,
 > enabling seamless integration with the backend services.
 
@@ -94,14 +93,14 @@ from [this repository](https://github.com/benbalter/dc-maps/blob/master/maps/nei
 > it serves the purpose of this example because more accurate GeoJSON seems to need to be purchased. See
 > more [here](https://simplemaps.com/city/washington/neighborhoods).
 
-1) Move the downloaded GeoJSON file to the `public/geojson/DC` directory in
+1. Move the downloaded GeoJSON file to the `public/geojson/DC` directory in
    the ![Frontend](https://img.shields.io/badge/Frontend-React-blue).
 
 ```bash
 mv neighborhood-clusters.geojson /path/to/taxis-vis-frontend/public/geojson/DC/neighborhoods.geojson
 ```
 
-2) Move the downloaded GEOJSON file to the `public/geojson/DC` directory in
+2. Move the downloaded GEOJSON file to the `public/geojson/DC` directory in
    the ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green).
 
 ```bash
@@ -119,23 +118,23 @@ Similarly, the map center can be defined manually or by using a predefined city 
 
 ```json
 {
-   "mapSettings": {
-      "tileLayer": "streets-v12-2D",
-      "center": "dc",
-      "zoom": 11
-   },
-   "geoJsonLayers": [
-      {
-         "id": "neighborhoods-layer",
-         "name": "Neighborhoods",
-         "url": "/geojson/DC/neighborhoods.geojson",
-         "style": {
-            "color": "#8206a9",
-            "weight": 2,
-            "opacity": 0.5
-         }
+  "mapSettings": {
+    "tileLayer": "streets-v12-2D",
+    "center": "dc",
+    "zoom": 11
+  },
+  "geoJsonLayers": [
+    {
+      "id": "neighborhoods-layer",
+      "name": "Neighborhoods",
+      "url": "/geojson/DC/neighborhoods.geojson",
+      "style": {
+        "color": "#8206a9",
+        "weight": 2,
+        "opacity": 0.5
       }
-   ]
+    }
+  ]
 }
 ```
 
@@ -143,22 +142,24 @@ Similarly, the map center can be defined manually or by using a predefined city 
 
 ```json
 {
-   "mapSettings": {
-      "tileLayer": "mapbox://styles/your-custom-style-url",
-      "center": [
-         38.9072,
-         -77.0369
-      ],
-      "zoom": 11
-   }
+  "mapSettings": {
+    "tileLayer": "mapbox://styles/your-custom-style-url",
+    "center": [38.9072, -77.0369],
+    "zoom": 11
+  }
 }
 ```
 
 > [!NOTE]
+>
 > - If `"center": "dc"` is set, the system automatically retrieves Washington DC’s coordinates from
+
     `cities_centers.json`.
+
 > - You can switch to any predefined Mapbox style by referencing its key from `tiles_layers.json` instead of providing a
+
     full URL.
+
 > - The **tile layer** must be either a valid **Mapbox style URL** or a predefined key.
 
 ---
@@ -174,44 +175,44 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 
 ```json
 {
-   "mapSettings": {
-      "tileLayer": "streets-v12-2D",
-      "center": "nyc",
-     "threeDEnabled": false,
-      "zoom": 11
-   },
-   "geoJsonLayers": [
-      {
-         "id": "nyc-layer",
-         "name": "NYCBoroughs",
-         "url": "/geojson/NYC/boroughs.geojson",
-         "style": {
-            "color": "#4E3FC8",
-            "weight": 2,
-            "opacity": 0.5
-         }
-      },
-      {
-         "id": "nyc-neighbourhoods-layer",
-         "name": "NYCNeighbourhoods",
-         "url": "/geojson/NYC/neighborhoods.geojson",
-         "style": {
-            "color": "#8206a9",
-            "weight": 2,
-            "opacity": 0.5
-         }
-      },
-      {
-         "id": "nyc-parks-layer",
-         "name": "NYCParks",
-         "url": "/geojson/NYC/parks.geojson",
-         "style": {
-            "color": "#298008",
-            "weight": 2,
-            "opacity": 0.5
-         }
+  "mapSettings": {
+    "tileLayer": "streets-v12-2D",
+    "center": "nyc",
+    "threeDEnabled": false,
+    "zoom": 11
+  },
+  "geoJsonLayers": [
+    {
+      "id": "nyc-layer",
+      "name": "NYCBoroughs",
+      "url": "/geojson/NYC/boroughs.geojson",
+      "style": {
+        "color": "#4E3FC8",
+        "weight": 2,
+        "opacity": 0.5
       }
-   ]
+    },
+    {
+      "id": "nyc-neighbourhoods-layer",
+      "name": "NYCNeighbourhoods",
+      "url": "/geojson/NYC/neighborhoods.geojson",
+      "style": {
+        "color": "#8206a9",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    },
+    {
+      "id": "nyc-parks-layer",
+      "name": "NYCParks",
+      "url": "/geojson/NYC/parks.geojson",
+      "style": {
+        "color": "#298008",
+        "weight": 2,
+        "opacity": 0.5
+      }
+    }
+  ]
 }
 ```
 
@@ -219,19 +220,17 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 
 ```json
 {
-   "mapSettings": {
-      "tileLayer": "mapbox://styles/your-custom-style-url",
-      "center": [
-         40.7128,
-         -74.0060
-      ],
-     "threeDEnabled": false,
-      "zoom": 11
-   }
+  "mapSettings": {
+    "tileLayer": "mapbox://styles/your-custom-style-url",
+    "center": [40.7128, -74.006],
+    "threeDEnabled": false,
+    "zoom": 11
+  }
 }
 ```
 
 > [!NOTE]
+>
 > - If `"center": "nyc"` is set, the system automatically retrieves NYC’s coordinates from `cities_centers.json`.
 > - The **tile layer** can be a custom Mapbox style URL or a predefined key from `tiles_layers.json`.
 > - Multiple layers can be included under `geoJsonLayers`, and the UI allows toggling them on/off.
@@ -308,8 +307,8 @@ CREATE INDEX idx_dropoff_time ON trips (tpep_dropoff_datetime);
 .exit
 ```
 
-> [!NOTE]
-> **Tip**: Ensure that the column names in the `read_csv` function match exactly with your CSV headers for seamless data
+> [!NOTE] > **Tip**: Ensure that the column names in the `read_csv` function match exactly with your CSV headers for
+> seamless data
 > import.
 
 ### 7. Configure Backend `config.json` and `dataset.json`
@@ -327,15 +326,11 @@ Modify the backend configuration files to point to the DC DuckDB database and Ge
     "tripsTableName": "trips",
     "databaseDescription": "./config/dataset.json",
     "accessMode": "READ_ONLY",
-    "extensions": [
-      "spatial"
-    ]
+    "extensions": ["spatial"]
   },
   "geojson": {
     "filePath": "./public/geojson/DC/neighborhoods.geojson",
-    "neighborhoodNameKeys": [
-      "NBH_NAMES"
-    ]
+    "neighborhoodNameKeys": ["NBH_NAMES"]
   }
 }
 ```
@@ -398,9 +393,8 @@ Modify the backend configuration files to point to the DC DuckDB database and Ge
 }
 ```
 
-> [!CAUTION]
-> **Ensure Consistency**: The keys in `filtered_trips_output_columns` should match the
-`data_analysis_backend_required_columns`. This ensures seamless data flow between the frontend and the data analysis
+> [!CAUTION] > **Ensure Consistency**: The keys in `filtered_trips_output_columns` should match the
+> `data_analysis_backend_required_columns`. This ensures seamless data flow between the frontend and the data analysis
 > backend.
 
 ### 8. Finalise and Restart Services
@@ -410,11 +404,13 @@ Modify the backend configuration files to point to the DC DuckDB database and Ge
 After completing the above configurations:
 
 1. **Restart the Node.js Geospatial Backend** to apply the new configurations.
+
    ```bash
    node server.js
    ```
 
 2. **Restart the npm React Frontend** to apply the new configurations.
+
    ```bash
    npm run start
    ```
@@ -427,4 +423,4 @@ After completing the above configurations:
 ---
 
 **Happy Exploring!**  
-_The Taxis Vis Team___
+\_The Taxis Vis Team\_\_\_

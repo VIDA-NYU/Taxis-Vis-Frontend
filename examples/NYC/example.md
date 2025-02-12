@@ -40,7 +40,6 @@ the [NYC Open Data Portal (2015 Yellow Taxi Trip Data)](https://data.cityofnewyo
 > There appear to be a couple of "outliers" data points in the dataset. Making it sometime popping some data poin in the
 > middle of the ocean hence moving the "camera view" crazy far away. We could "clean" the data but for the sake of the POC
 > we have not. Simply zoom back in NYC.
->
 
 ### 2. (Optional) Extract a Subset of Rows
 
@@ -83,7 +82,7 @@ if __name__ == "__main__":
 uv run python extract_rows_pandas.py taxisbig.csv taxisvis1M.csv 1000000
 ```
 
-*(This extracts 1 million rows from `taxisbig.csv` to `taxisvis1M.csv`.)*
+_(This extracts 1 million rows from `taxisbig.csv` to `taxisvis1M.csv`.)_
 
 ### 3. Download NYC GeoJSON Layers ![Frontend](https://img.shields.io/badge/Frontend-React-blue)
 
@@ -129,6 +128,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 `src/utils/cities_centers.json`](../src/utils/cities_centers.json).
 
 #### Example Using Predefined Tile Layer and City Center:
+
 ```json
 {
   "mapSettings": {
@@ -180,7 +180,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
       "tileLayer": "mapbox://styles/your-custom-style-url",
       "center": [
          40.7128,
-         -74.0060
+         -74.006
       ],
       "threeDEnabled": false,
       "zoom": 11
@@ -189,6 +189,7 @@ Instead of hardcoding coordinates and styles, you can leverage predefined **tile
 ```
 
 > [!NOTE]
+>
 > - If `"center": "nyc"` is set, the system automatically retrieves NYC’s coordinates from `cities_centers.json`.
 > - The **tile layer** can be a custom Mapbox style URL or a predefined key from `tiles_layers.json`.
 > - Multiple layers can be included under `geoJsonLayers`, and the UI allows toggling them on/off.
@@ -256,8 +257,7 @@ CREATE INDEX idx_dropoff_time ON trips (tpep_dropoff_datetime);
 .exit
 ```
 
-> [!NOTE]
-> **Tip**: If your CSV includes additional columns or uses different naming, update them in `columns={ ... }`.
+> [!NOTE] > **Tip**: If your CSV includes additional columns or uses different naming, update them in `columns={ ... }`.
 
 ### 6. Configure Backend `config.json` and `dataset.json`
 
@@ -274,15 +274,15 @@ In your Node.js geospatial backend, set:
     "tripsTableName": "trips",
     "databaseDescription": "./config/dataset.json",
     "accessMode": "READ_ONLY",
-    "extensions": [
-      "spatial"
-    ]
+     "extensions": [
+        "spatial"
+     ]
   },
   "geojson": {
     "filePath": "./public/geojson/NYC/neighborhoods.geojson",
-    "neighborhoodNameKeys": [
-      "neighborhood"
-    ]
+     "neighborhoodNameKeys": [
+        "neighborhood"
+     ]
   }
 }
 ```
@@ -334,8 +334,8 @@ In your Node.js geospatial backend, set:
 }
 ```
 
-> [!CAUTION]
-> **Ensure Consistency**: The keys in `filtered_trips_output_columns` match the columns you actually have in DuckDB.
+> [!CAUTION] > **Ensure Consistency**: The keys in `filtered_trips_output_columns` match the columns you actually have
+> in DuckDB.
 > Also note that `data_analysis_backend_required_columns` must not be removed if you plan to run the Data Analysis Backend
 > for advanced charts.
 
@@ -344,11 +344,13 @@ In your Node.js geospatial backend, set:
 ![Frontend](https://img.shields.io/badge/Frontend-React-blue) ![GeoSpatial Backend](https://img.shields.io/badge/GeoSpatial-Backend-green)
 
 1. **Restart the Node.js Geospatial Backend**:
+
    ```bash
    node server.js
    ```
 
 2. **Restart the npm React Frontend**:
+
    ```bash
    npm run start
    ```

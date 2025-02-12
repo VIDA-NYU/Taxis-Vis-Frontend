@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-title: "Taxis Vis: Frontend"
+message: 'If you use this software, please cite it as below.'
+title: 'Taxis Vis: Frontend'
 authors:
   - name: Simon Provost
     orcid: https://orcid.org/0000-0001-8402-5464
